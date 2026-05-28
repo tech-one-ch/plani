@@ -1,0 +1,8 @@
+{
+  "extends": "@plani/config/typescript",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src"]
+}

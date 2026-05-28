@@ -1,0 +1,28 @@
+{
+  "name": "@plani/email",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Email templates (react-email) and SMTP sender (nodemailer) for Plani",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "email:dev": "email dev --dir src/templates --port 3001"
+  },
+  "dependencies": {
+    "@react-email/components": "^0.0.31",
+    "nodemailer": "^6.9.16",
+    "react": "^19.0.0",
+    "react-email": "^3.0.7"
+  },
+  "devDependencies": {
+    "@plani/config": "workspace:*",
+    "@types/nodemailer": "^6.4.17",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.3"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  }
+}

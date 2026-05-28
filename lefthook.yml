@@ -1,0 +1,16 @@
+# https://lefthook.dev/configuration/
+# Run "node_modules/.bin/lefthook install" (or "pnpm exec lefthook install" if pnpm is global) to wire up hooks.
+#
+# ESLint is intentionally NOT in the pre-commit hook: running it per-file across a monorepo is
+# slow and complex (each package has its own config). Use "pnpm lint" locally or let CI enforce it.
+
+pre-commit:
+  commands:
+    format:
+      glob: "*.{ts,tsx,js,jsx,mjs,cjs,json,md,yml,yaml,css}"
+      run: node_modules/.bin/prettier --check {staged_files}
+
+commit-msg:
+  commands:
+    commitlint:
+      run: node_modules/.bin/commitlint --edit {1}

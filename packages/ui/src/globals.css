@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+@theme {
+  /* Design tokens — to be expanded with the Plani design system. */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}

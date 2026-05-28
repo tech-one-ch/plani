@@ -1,0 +1,50 @@
+{
+  "name": "plani",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Open-source self-hosted collaborative visual planning: tasks, board, calendar, notes and canvas in one project space.",
+  "license": "AGPL-3.0-or-later",
+  "homepage": "https://github.com/tech-one-ch/plani",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tech-one-ch/plani.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tech-one-ch/plani/issues"
+  },
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@10.5.0",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "clean": "turbo run clean && rm -rf node_modules .turbo",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml,css}\"",
+    "prepare": "lefthook install || true"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "lefthook",
+      "sharp",
+      "@tailwindcss/oxide"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@commitlint/types": "^19.5.0",
+    "eslint": "^9.18.0",
+    "lefthook": "^1.10.10",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.10",
+    "turbo": "^2.3.4",
+    "typescript": "^5.7.3"
+  }
+}
