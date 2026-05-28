@@ -21,6 +21,8 @@
     "@plani/types": "workspace:*",
     "@plani/ui": "workspace:*",
     "better-auth": "^1.2.7",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.45.0",
     "next": "^15.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
