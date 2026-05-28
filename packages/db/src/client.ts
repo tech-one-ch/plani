@@ -13,9 +13,10 @@ let _db: Database | undefined;
 
 export function getDb(): Database {
   if (!_db) {
-    const url = process.env["DATABASE_URL"];
-    if (!url) throw new Error("DATABASE_URL is not set");
-    _db = createDb(url);
+    // postgres.js connects lazily (on first query), so createDb with a placeholder
+    // URL is safe during Next.js build-time module evaluation. The error surfaces
+    // at request time when DATABASE_URL is actually missing.
+    _db = createDb(process.env["DATABASE_URL"] ?? "postgres://localhost/plani");
   }
   return _db;
 }

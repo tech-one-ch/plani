@@ -14,14 +14,19 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
     "@plani/auth": "workspace:*",
     "@plani/db": "workspace:*",
     "@plani/email": "workspace:*",
     "@plani/types": "workspace:*",
     "@plani/ui": "workspace:*",
+    "better-auth": "^1.2.7",
     "next": "^15.1.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
+    "sonner": "^1.7.4",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@plani/config": "workspace:*",
