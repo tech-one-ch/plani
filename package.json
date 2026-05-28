@@ -13,7 +13,7 @@
     "url": "https://github.com/tech-one-ch/plani/issues"
   },
   "engines": {
-    "node": ">=22",
+    "node": ">=20",
     "pnpm": ">=10"
   },
   "packageManager": "pnpm@10.5.0",
@@ -30,14 +30,6 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml,css}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml,css}\"",
     "prepare": "lefthook install || true"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "lefthook",
-      "sharp",
-      "@tailwindcss/oxide"
-    ]
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",
