@@ -24,6 +24,9 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "clean": "turbo run clean && rm -rf node_modules .turbo",
+    "db:generate": "turbo run db:generate --filter=@plani/db",
+    "db:migrate": "turbo run db:migrate --filter=@plani/db",
+    "db:seed": "turbo run db:seed --filter=@plani/db",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml,css}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml,css}\"",
     "prepare": "lefthook install || true"
