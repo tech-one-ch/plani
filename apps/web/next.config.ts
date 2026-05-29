@@ -10,6 +10,8 @@ config({ path: resolve(__dirname, "../../.env"), override: false });
 const nextConfig: NextConfig = {
   output: "standalone",
   transpilePackages: ["@plani/ui", "@plani/auth", "@plani/db", "@plani/email", "@plani/types"],
+  // dotenv is used in instrumentation.ts (server-only) — don't bundle it for the client
+  serverExternalPackages: ["dotenv"],
 };
 
 export default nextConfig;
