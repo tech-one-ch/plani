@@ -2,11 +2,14 @@ import { getSessionCookie } from "better-auth/cookies";
 import { type NextRequest, NextResponse } from "next/server";
 
 const AUTH_PAGES = ["/login", "/signup", "/reset-password", "/verify-email"];
-const PROTECTED_PREFIXES = ["/dashboard"];
+const PROTECTED_PREFIXES = ["/dashboard", "/admin"];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const session = getSessionCookie(request);
+
+  // /setup is always accessible — the page itself checks if setup is needed
+  if (pathname.startsWith("/setup")) return NextResponse.next();
 
   const isAuthPage = AUTH_PAGES.some((p) => pathname === p || pathname.startsWith(p + "/"));
   const isProtected = PROTECTED_PREFIXES.some((p) => pathname.startsWith(p));
