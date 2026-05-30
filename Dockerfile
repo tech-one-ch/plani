@@ -8,11 +8,11 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
 
-# git is required by lefthook during pnpm install
-RUN apk add --no-cache git
-
 # Install pnpm via corepack
 RUN corepack enable && corepack prepare pnpm@10.5.0 --activate
+
+# Disable lefthook — it needs a .git repo which doesn't exist in Docker context
+ENV LEFTHOOK=0
 
 # Copy workspace manifests and lockfile first (layer cache)
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
@@ -24,8 +24,7 @@ COPY packages/email/package.json ./packages/email/package.json
 COPY packages/types/package.json ./packages/types/package.json
 COPY packages/ui/package.json ./packages/ui/package.json
 
-# LEFTHOOK=0 skips the git hooks install (no .git dir in Docker context)
-RUN LEFTHOOK=0 pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 
 # ---- Stage 2: build ---------------------------------------------------------
