@@ -6,21 +6,15 @@ export const dynamic = "force-dynamic";
 export default async function AdminOverviewPage() {
   const db = getDb();
 
-  const [userCount, orgCount, adminCount] = await Promise.all([
-    db
-      .select({ total: count() })
-      .from(users)
-      .then((r) => r[0]?.total ?? 0),
-    db
-      .select({ total: count() })
-      .from(organizations)
-      .then((r) => r[0]?.total ?? 0),
-    db
-      .select({ total: count() })
-      .from(users)
-      .where(eq(users.role, "admin"))
-      .then((r) => r[0]?.total ?? 0),
+  const [[userRow], [orgRow], [adminRow]] = await Promise.all([
+    db.select({ total: count() }).from(users),
+    db.select({ total: count() }).from(organizations),
+    db.select({ total: count() }).from(users).where(eq(users.role, "admin")),
   ]);
+
+  const userCount = Number(userRow?.total ?? 0);
+  const orgCount = Number(orgRow?.total ?? 0);
+  const adminCount = Number(adminRow?.total ?? 0);
 
   return (
     <div className="space-y-6">
