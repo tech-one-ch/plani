@@ -1,7 +1,6 @@
 {
   "extends": "@plani/config/typescript/nextjs",
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
