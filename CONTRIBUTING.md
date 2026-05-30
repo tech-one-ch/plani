@@ -178,6 +178,20 @@ plani/
 
 All merges between protected branches go through a pull request. No direct push to `develop`, `staging`, or `main`.
 
+### Merge strategy — important
+
+The merge strategy depends on the type of PR:
+
+| PR type                         | Strategy                  | Why                                                        |
+| ------------------------------- | ------------------------- | ---------------------------------------------------------- |
+| `feat/*` or `fix/*` → `develop` | **Squash and merge**      | Keeps `develop` history clean — one commit per feature     |
+| `develop` → `staging`           | **Create a merge commit** | Preserves git ancestry so future merges stay conflict-free |
+| `staging` → `main`              | **Create a merge commit** | Same reason                                                |
+
+> **Never use "Squash and merge" for promotion PRs** (`develop → staging`, `staging → main`).
+> Squashing rewrites the commit history — the next promotion will see the branches as
+> divergent and produce conflicts on every file.
+
 ---
 
 ## Commit conventions
