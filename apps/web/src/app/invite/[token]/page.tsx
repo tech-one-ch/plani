@@ -14,12 +14,13 @@ export default function InvitePage() {
   const { data: session } = authClient.useSession();
 
   useEffect(() => {
-    authClient.organization
-      .getInvitation({ query: { id: params.token } })
-      .then((result) => {
-        if (result.data) setOrgName(result.data.organizationName);
-      })
-      .catch(() => {});
+    async function fetchInvitation() {
+      const result = await authClient.organization.getInvitation({
+        query: { id: params.token },
+      });
+      if (result.data) setOrgName(result.data.organizationName);
+    }
+    fetchInvitation().catch(() => {});
   }, [params.token]);
 
   async function accept() {
