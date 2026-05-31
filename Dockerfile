@@ -1,20 +1,22 @@
 # =============================================================================
 # Plani — Production Dockerfile
-# Multi-stage build: install → build → minimal runner
+# Multi-stage build: install+build → minimal runner
 # Compatible with Coolify, Dokploy, and any Docker host.
 # =============================================================================
 
-# ---- Stage 1: dependencies --------------------------------------------------
-FROM node:22-alpine AS deps
+# ---- Stage 1: build ---------------------------------------------------------
+FROM node:22-alpine AS builder
 WORKDIR /app
 
 # Install pnpm via corepack
 RUN corepack enable && corepack prepare pnpm@10.5.0 --activate
 
-# Disable lefthook — it needs a .git repo which doesn't exist in Docker context
+# Disable lefthook — no .git repo in Docker context
 ENV LEFTHOOK=0
+ENV TURBO_TELEMETRY_DISABLED=1
+ENV NEXT_TELEMETRY_DISABLED=1
 
-# Copy workspace manifests and lockfile first (layer cache)
+# Copy workspace manifests and lockfile first (layer cache for install step)
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY apps/web/package.json ./apps/web/package.json
 COPY packages/auth/package.json ./packages/auth/package.json
@@ -24,30 +26,17 @@ COPY packages/email/package.json ./packages/email/package.json
 COPY packages/types/package.json ./packages/types/package.json
 COPY packages/ui/package.json ./packages/ui/package.json
 
+# Install all dependencies — pnpm creates correct symlinks for all packages
 RUN pnpm install --frozen-lockfile
 
-
-# ---- Stage 2: build ---------------------------------------------------------
-FROM node:22-alpine AS builder
-WORKDIR /app
-
-RUN corepack enable && corepack prepare pnpm@10.5.0 --activate
-
-# pnpm uses a hoisted virtual store — copy the full node_modules tree
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
-
-# Copy source code
+# Copy all source code
 COPY . .
-
-ENV TURBO_TELEMETRY_DISABLED=1
-ENV NEXT_TELEMETRY_DISABLED=1
 
 # Build Next.js standalone output
 RUN pnpm --filter @plani/web build
 
 
-# ---- Stage 3: runner --------------------------------------------------------
+# ---- Stage 2: runner --------------------------------------------------------
 FROM node:22-alpine AS runner
 WORKDIR /app
 
