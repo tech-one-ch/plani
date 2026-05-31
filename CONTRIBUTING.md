@@ -133,6 +133,25 @@ pnpm --filter @plani/db typecheck
 pnpm --filter @plani/web dev
 ```
 
+### Before pushing — verify the build matches CI
+
+`pnpm build` uses cached results (`.next/`, `.turbo/`) and can silently skip
+TypeScript checks on files it has already seen. CI and Docker always start
+from scratch, so they can catch errors that pass locally.
+
+If CI fails with a TypeScript error that doesn't reproduce locally, clear
+the cache first:
+
+```bash
+rm -rf apps/web/.next .turbo
+pnpm --filter @plani/web build
+```
+
+This runs exactly what the Docker build runs. **You only need this when:**
+
+- CI fails with a TypeScript error but local passes
+- You're pushing a PR that touches type-sensitive code and want to be sure
+
 ---
 
 ## Project structure
