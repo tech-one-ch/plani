@@ -16,8 +16,8 @@ export default function InvitePage() {
   useEffect(() => {
     authClient.organization
       .getInvitation({ query: { id: params.token } })
-      .then(({ data }) => {
-        if (data) setOrgName(data.organizationName);
+      .then((result) => {
+        if (result.data) setOrgName(result.data.organizationName);
       })
       .catch(() => {});
   }, [params.token]);
