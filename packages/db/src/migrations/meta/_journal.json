@@ -8,6 +8,13 @@
       "when": 1779974399612,
       "tag": "0000_special_spot",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1780317858721,
+      "tag": "0001_cold_impossible_man",
+      "breakpoints": true
     }
   ]
 }
