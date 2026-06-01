@@ -1,0 +1,35 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+.next
+dist
+build
+out
+.turbo
+*.tsbuildinfo
+
+# Dev environment
+.env
+.env.local
+.env.*.local
+
+# Tests
+coverage
+playwright-report
+test-results
+
+# Git
+.git
+.gitignore
+
+# Misc
+.DS_Store
+*.log
+README.md
+CONTRIBUTING.md
+CHANGELOG.md
+docs/
+.github/
+docker/
