@@ -211,6 +211,62 @@ The merge strategy depends on the type of PR:
 > Squashing rewrites the commit history — the next promotion will see the branches as
 > divergent and produce conflicts on every file.
 
+### How to fill a PR
+
+**Feature / fix PR** (`feat/*` or `fix/*` → `develop`):
+
+- **Title:** follow Conventional Commits — `feat(scope): short description` or `fix(scope): ...`
+- **Summary:** 1–3 bullet points describing what changed and why
+- **Testing:** check the boxes that apply; run the cache-busting build if you touched Next.js code
+- **Screenshots:** add before/after if the change is visible in the browser
+
+**Promotion PR** (`develop → staging` or `staging → main`):
+
+- **Title:** `chore: promote develop to staging` or `chore: promote staging to main`
+- **Summary:** paste the list of commits included since the last promotion:
+  ```bash
+  git log --oneline origin/staging..origin/develop  # for develop → staging
+  git log --oneline origin/main..origin/staging      # for staging → main
+  ```
+- **Testing / Screenshots:** skip — CI already validated the code
+
+### Releases and versioning
+
+Versioning is handled automatically by [release-please](https://github.com/googleapis/release-please-action). You never set version numbers manually.
+
+**How it works:**
+
+1. You merge `staging → main`
+2. release-please reads all Conventional Commits since the last release and opens a PR:
+   _"chore: release v0.2.0"_ with an auto-generated CHANGELOG
+3. You review and merge that PR when ready
+4. A git tag `v0.2.0` is created automatically
+5. The Docker build triggers and pushes:
+   - `ghcr.io/tech-one-ch/plani:0.2.0` ← permanent, never deleted
+   - `ghcr.io/tech-one-ch/plani:latest` ← updated to point to this release
+
+**Version bump rules** (from your commit messages):
+
+| Commits since last release     | Result                  |
+| ------------------------------ | ----------------------- |
+| Only `fix:`                    | patch — `0.1.0 → 0.1.1` |
+| At least one `feat:`           | minor — `0.1.0 → 0.2.0` |
+| `feat!:` or `BREAKING CHANGE:` | major — `0.1.0 → 1.0.0` |
+
+To override the calculated version (e.g., jump straight to `v2.0.0`), edit
+`.release-please-manifest.json` in the release PR before merging.
+
+### Docker images
+
+| Image tag                           | Updated when             | Kept?       |
+| ----------------------------------- | ------------------------ | ----------- |
+| `ghcr.io/tech-one-ch/plani:latest`  | Every merge to `main`    | Overwritten |
+| `ghcr.io/tech-one-ch/plani:0.1.0`   | Release `v0.1.0`         | Permanent   |
+| `ghcr.io/tech-one-ch/plani:staging` | Every merge to `staging` | Overwritten |
+
+The `staging` image is always the latest pre-production build — only one exists at a time.
+Old release images (`0.1.0`, `0.2.0`, …) are kept forever so you can roll back to any version.
+
 ---
 
 ## Commit conventions
