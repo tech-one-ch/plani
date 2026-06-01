@@ -71,6 +71,7 @@ export function TaskDialog({ task, members, onClose, onUpdated, onDeleted }: Tas
       assigneeId: task.assigneeId ?? "",
       dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: reset only when task ID changes, not on every field edit
   }, [task.id, reset]);
 
   async function onSubmit(values: FormValues) {
