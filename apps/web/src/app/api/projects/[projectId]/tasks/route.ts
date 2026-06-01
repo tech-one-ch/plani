@@ -1,5 +1,5 @@
 import { getDb, projects, tasks } from "@plani/db";
-import { and, count, eq, sql } from "drizzle-orm";
+import { and, count, eq } from "drizzle-orm";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { requireOrgMember } from "@/lib/require-org-member";
