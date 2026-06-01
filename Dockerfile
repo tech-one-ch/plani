@@ -1,6 +1,7 @@
 # =============================================================================
 # Plani — Production Dockerfile
 # Multi-stage build: install+build → minimal runner
+# Migrations run automatically at container start via docker-entrypoint.sh.
 # Compatible with Coolify, Dokploy, and any Docker host.
 # =============================================================================
 
@@ -52,10 +53,17 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 
+# Migration runner — needs the SQL files and drizzle-orm (already in standalone node_modules)
+COPY --from=builder --chown=nextjs:nodejs /app/packages/db/src/migrations ./migrations
+COPY --chown=nextjs:nodejs docker-migrate.mjs ./docker-migrate.mjs
+COPY --chown=nextjs:nodejs docker-entrypoint.sh ./docker-entrypoint.sh
+RUN chmod +x ./docker-entrypoint.sh
+
 USER nextjs
 
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "apps/web/server.js"]
+# Entrypoint runs migrations then starts Next.js
+CMD ["./docker-entrypoint.sh"]

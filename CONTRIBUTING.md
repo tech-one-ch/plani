@@ -90,13 +90,8 @@ make dev-docker
 # or: docker compose -f docker-compose.yml -f docker-compose.full.yml up --build
 ```
 
-> **Note:** After first run you still need to apply migrations. With the app running:
->
-> ```bash
-> docker exec $(docker compose -f docker-compose.yml -f docker-compose.full.yml ps -q web) \
->   node -e "process.exit(0)"  # verify container is up
-> pnpm db:migrate               # runs migrations using local .env
-> ```
+Migrations run **automatically** at container startup — no extra step needed.  
+The app will be available at <http://localhost:3000>.
 
 ### Stop everything
 
