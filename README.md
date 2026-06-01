@@ -54,37 +54,9 @@ plani/
 └── .github/                # PR template, CODEOWNERS, dependabot
 ```
 
-## Local development
+## Getting started
 
-> Requires **Node.js 22 LTS** and **pnpm 10**.
-
-```bash
-# Enable corepack if you haven't (ships with Node 22)
-corepack enable
-
-# Install dependencies
-pnpm install
-
-# Start the web app in dev mode
-pnpm dev
-```
-
-The web app will be available at <http://localhost:3000>.
-
-## Contributing
-
-This project follows the [Conventional Commits](https://www.conventionalcommits.org/) specification. A pre-commit hook (lefthook) runs lint + format checks; a commit-msg hook validates your commit message.
-
-**Branching model**
-
-| Branch     | Purpose                        | Protected? |
-| ---------- | ------------------------------ | ---------- |
-| `main`     | Production                     | Yes        |
-| `staging`  | Pre-production / dev env       | Yes        |
-| `develop`  | Integration of feature work    | Yes        |
-| `feat/...` | Feature branches (short-lived) | No         |
-
-All merges between protected branches must go through a pull request.
+See **[CONTRIBUTING.md](./CONTRIBUTING.md)** for the complete local setup guide: prerequisites, first-time install, running migrations, and development workflow.
 
 ## License
 
