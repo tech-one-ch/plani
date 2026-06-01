@@ -61,50 +61,48 @@ cp .env.example .env
 
 ## Running locally
 
-### Start the infrastructure (Postgres + Mailhog)
+There are two ways to run Plani locally. A **Makefile** provides shortcuts for all common commands — run `make help` to see the full list.
+
+### Option A — `pnpm dev` (recommended for development)
+
+Hot reload, fast feedback. Run the app natively and only infrastructure in Docker.
 
 ```bash
-docker compose up -d
-```
+# 1. Start Postgres + Mailhog
+make dev-infra           # or: docker compose up -d
 
-This starts:
+# 2. Apply migrations (first time only, or after a new migration is added)
+make migrate             # or: pnpm db:migrate
 
-- **Postgres 16** on port `5432` (DB: `plani`, user: `plani`, password: `plani`)
-- **Mailhog** on port `1025` (SMTP) and `8025` (web UI — open <http://localhost:8025> to read sent emails)
-
-### Apply database migrations
-
-Only needed the first time (or after a new migration is added):
-
-```bash
-pnpm db:migrate
-```
-
-### Seed default instance settings (optional)
-
-```bash
-pnpm db:seed
-```
-
-### Start the development server
-
-```bash
-pnpm dev
+# 3. Start the app
+pnpm dev                 # or: make dev (does steps 1+3 together)
 ```
 
 The app will be available at <http://localhost:3000>.  
-Hot reload is enabled via Next.js Turbopack.
+Mailhog (email preview) at <http://localhost:8025>.
+
+### Option B — Full Docker build (test the production image locally)
+
+Builds the Dockerfile and runs the full stack in Docker. Closer to production behavior.
+
+```bash
+make dev-docker
+# or: docker compose -f docker-compose.yml -f docker-compose.full.yml up --build
+```
+
+> **Note:** After first run you still need to apply migrations. With the app running:
+>
+> ```bash
+> docker exec $(docker compose -f docker-compose.yml -f docker-compose.full.yml ps -q web) \
+>   node -e "process.exit(0)"  # verify container is up
+> pnpm db:migrate               # runs migrations using local .env
+> ```
 
 ### Stop everything
 
 ```bash
-# Kill the dev server: Ctrl+C in the terminal where pnpm dev is running
-
-# Stop Docker services (data is preserved in a Docker volume)
-docker compose stop
-
-# Stop AND delete all data
-docker compose down -v
+make down         # stop infra (Postgres + Mailhog), preserves data
+make down-all     # stop infra AND delete all data (fresh start)
 ```
 
 ---
