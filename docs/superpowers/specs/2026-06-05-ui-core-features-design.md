@@ -14,15 +14,15 @@ Plani est actuellement un scaffold fonctionnel : auth, admin, organisations et w
 
 ## Décisions visuelles
 
-| Élément | Choix |
-|---------|-------|
-| Thème | Full dark par défaut (`#0a0a0a` fond, `#0f0f0f` sidebar) |
-| Toggle light | Prévu mais non implémenté en v1 |
-| Navigation | Sidebar gauche large (220px), collapsible en mode icônes (48px) |
-| Accent principal | Bleu (`#3b82f6`) |
-| Accent secondaire | Blanc / gris clair pour highlights et textes importants |
+| Élément           | Choix                                                                        |
+| ----------------- | ---------------------------------------------------------------------------- |
+| Thème             | Full dark par défaut (`#0a0a0a` fond, `#0f0f0f` sidebar)                     |
+| Toggle light      | Prévu mais non implémenté en v1                                              |
+| Navigation        | Sidebar gauche large (220px), collapsible en mode icônes (48px)              |
+| Accent principal  | Bleu (`#3b82f6`)                                                             |
+| Accent secondaire | Blanc / gris clair pour highlights et textes importants                      |
 | Navigation projet | Onglets horizontaux en haut du contenu (Board / Tâches / Notes / Calendrier) |
-| Design | Flat, minimaliste, sobre — pas d'ombres portées, peu de couleurs |
+| Design            | Flat, minimaliste, sobre — pas d'ombres portées, peu de couleurs             |
 
 ---
 
@@ -135,6 +135,7 @@ Remplace le layout actuel par la structure dark complète :
 > **Workspace = Organisation better-auth.** En v1, chaque organisation a exactement un workspace (créé automatiquement à la création de l'org). Le switcher change d'organisation active (`activeOrganizationId` sur la session). Le workspace est résolu depuis l'organisation active.
 
 **Sidebar :**
+
 - Section navigation : Dashboard, Mes tâches
 - Séparateur
 - Section projets : liste des projets du workspace actif (dot couleur + nom), bouton "+ Nouveau projet"
@@ -172,14 +173,15 @@ Si l'utilisateur a un workspace → redirect `/dashboard`. Sinon → flow créat
 
 4 colonnes fixes dans l'ordre :
 
-| Colonne | Statut DB |
-|---------|-----------|
-| Backlog | `backlog` |
-| À faire | `todo` |
+| Colonne  | Statut DB     |
+| -------- | ------------- |
+| Backlog  | `backlog`     |
+| À faire  | `todo`        |
 | En cours | `in_progress` |
-| Terminé | `done` |
+| Terminé  | `done`        |
 
 **Carte tâche :**
+
 - Titre (tronqué à 2 lignes)
 - Badge priorité (rouge/orange/vert selon low/medium/high)
 - Date d'échéance (rouge si dépassée)
@@ -230,6 +232,7 @@ Split view 2 colonnes :
 **Création :** bouton "+ Nouvelle note" → crée en DB avec titre "Sans titre", sélectionne immédiatement dans l'éditeur, focus sur le titre.
 
 **Éditeur TipTap — extensions :**
+
 - `StarterKit` (paragraphe, titres h1-h3, gras, italique, listes, blockquote, code inline, codeblock, hr)
 - `Placeholder` — texte fantôme "Commencer à écrire..."
 - Pas d'image en v1
@@ -245,6 +248,7 @@ Split view 2 colonnes :
 **Liste :** tableau avec colonnes : avatar + nom, email, rôle (badge admin/member), date d'ajout, actions (retirer).
 
 **Inviter :** bouton "Inviter un membre" → modal avec :
+
 - Champ email
 - Sélecteur rôle : Member (défaut) / Admin
 - Bouton envoyer → utilise le client better-auth (`authClient.organization.inviteMember`) — pas de route custom, mieux-auth gère l'envoi d'email et la gestion de l'invitation.
@@ -272,12 +276,12 @@ Split view 2 colonnes :
 
 ## Stack & librairies ajoutées
 
-| Librairie | Usage |
-|-----------|-------|
-| `@dnd-kit/core` + `@dnd-kit/sortable` | Drag & drop kanban |
-| `@tiptap/react` + `@tiptap/starter-kit` | Éditeur de notes |
-| `zod` | Validation API (déjà disponible via better-auth) |
-| `lucide-react` | Icônes (déjà dans `@plani/ui` — utiliser via ce package ou ajouter à `apps/web`) |
+| Librairie                               | Usage                                                                            |
+| --------------------------------------- | -------------------------------------------------------------------------------- |
+| `@dnd-kit/core` + `@dnd-kit/sortable`   | Drag & drop kanban                                                               |
+| `@tiptap/react` + `@tiptap/starter-kit` | Éditeur de notes                                                                 |
+| `zod`                                   | Validation API (déjà disponible via better-auth)                                 |
+| `lucide-react`                          | Icônes (déjà dans `@plani/ui` — utiliser via ce package ou ajouter à `apps/web`) |
 
 ---
 
