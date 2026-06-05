@@ -27,7 +27,7 @@ const PRIORITY_COLOR: Record<string, string> = {
   low: "var(--color-priority-low)",
 };
 
-export function TaskList({ projectId, initialTasks }: { projectId: string; initialTasks: Task[] }) {
+export function TaskList({ initialTasks }: { projectId: string; initialTasks: Task[] }) {
   const [tasks, setTasks] = useState(initialTasks);
   const [selected, setSelected] = useState<Task | null>(null);
 

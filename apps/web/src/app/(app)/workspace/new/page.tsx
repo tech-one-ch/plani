@@ -49,7 +49,7 @@ export default function NewWorkspacePage() {
         <p className="mb-6 text-sm" style={{ color: "var(--color-text-secondary)" }}>
           Un workspace regroupe vos projets et votre équipe.
         </p>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-4">
           <div>
             <label
               className="mb-1.5 block text-xs font-medium"

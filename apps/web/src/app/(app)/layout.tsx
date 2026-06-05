@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { auth } from "@/lib/auth";
-import { getDb, workspaces, workspaceMembers, projects } from "@plani/db";
+import { getDb, workspaces, projects } from "@plani/db";
 import { eq } from "drizzle-orm";
 import { Topbar } from "@/components/layout/topbar";
 import { Sidebar } from "@/components/layout/sidebar";

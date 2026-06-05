@@ -29,7 +29,8 @@ export async function GET(_req: NextRequest, { params }: Params) {
 export async function POST(_req: NextRequest, { params }: Params) {
   const { projectId } = await params;
   const { error, session } = await requireProjectAccess(projectId);
-  if (error || !session) return error!;
+  if (error || !session)
+    return error ?? NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const db = getDb();
   const note = await db

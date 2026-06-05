@@ -14,7 +14,8 @@ const createSchema = z.object({
 
 export async function GET() {
   const { error, session } = await requireSession();
-  if (error || !session) return error!;
+  if (error || !session)
+    return error ?? NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const db = getDb();
   const userWorkspaces = await db
@@ -34,7 +35,8 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const { error, session } = await requireSession();
-  if (error || !session) return error!;
+  if (error || !session)
+    return error ?? NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = (await request.json()) as unknown;
   const parsed = createSchema.safeParse(body);
@@ -69,9 +71,12 @@ export async function POST(request: NextRequest) {
     .returning()
     .then((r) => r[0]);
 
+  if (!workspace)
+    return NextResponse.json({ error: "Failed to create workspace" }, { status: 500 });
+
   // Add user as workspace member
   await db.insert(workspaceMembers).values({
-    workspaceId: workspace!.id,
+    workspaceId: workspace.id,
     userId: session.user.id,
     role: "admin",
   });

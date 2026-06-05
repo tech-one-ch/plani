@@ -64,8 +64,8 @@ export function KanbanBoard({
     const draggedTask = tasks.find((t) => t.id === active.id);
     if (!draggedTask) return;
 
-    const newStatus = (COLUMNS.find((c) => c.id === over.id)?.id ??
-      tasks.find((t) => t.id === over.id)?.status) as Task["status"] | undefined;
+    const newStatus =
+      COLUMNS.find((c) => c.id === over.id)?.id ?? tasks.find((t) => t.id === over.id)?.status;
 
     if (!newStatus) return;
 
@@ -114,7 +114,11 @@ export function KanbanBoard({
 
   return (
     <>
-      <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <DndContext
+        sensors={sensors}
+        onDragStart={handleDragStart}
+        onDragEnd={(e) => void handleDragEnd(e)}
+      >
         <div className="flex h-full gap-4 overflow-x-auto p-6">
           {COLUMNS.map(({ id, label }) => (
             <KanbanColumn

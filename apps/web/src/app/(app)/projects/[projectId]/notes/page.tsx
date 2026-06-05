@@ -1,12 +1,10 @@
-// apps/web/src/app/(app)/projects/[projectId]/notes/page.tsx
 export const dynamic = "force-dynamic";
 
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
+import { notFound } from "next/navigation";
 import { getDb, notes } from "@plani/db";
 import { desc, eq } from "drizzle-orm";
 import { NotesView } from "./notes-view";
+import { requireProjectAccess } from "@/lib/require-session";
 
 interface Props {
   params: Promise<{ projectId: string }>;
@@ -14,8 +12,8 @@ interface Props {
 
 export default async function NotesPage({ params }: Props) {
   const { projectId } = await params;
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) redirect("/login");
+  const { error } = await requireProjectAccess(projectId);
+  if (error) notFound();
 
   const db = getDb();
   const noteList = await db

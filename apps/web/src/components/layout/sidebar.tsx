@@ -3,15 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  LayoutDashboard,
-  CheckSquare,
-  Users,
-  Settings,
-  Plus,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, LayoutDashboard, Users, Settings, Plus } from "lucide-react";
 import { cn } from "@plani/ui";
 
 type Project = { id: string; name: string; color: string };
@@ -22,7 +14,7 @@ interface SidebarProps {
   projects: Project[];
 }
 
-export function Sidebar({ workspace, projects }: SidebarProps) {
+export function Sidebar({ workspace: _workspace, projects }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
 

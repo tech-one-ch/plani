@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "./auth";
-import { getDb, workspaceMembers, workspaces, projects } from "@plani/db";
+import { getDb, workspaceMembers, projects } from "@plani/db";
 import { and, eq } from "drizzle-orm";
 
 export async function requireSession() {
@@ -17,7 +17,11 @@ export async function requireSession() {
 
 export async function requireWorkspaceMember(workspaceId: string) {
   const { error, session } = await requireSession();
-  if (error || !session) return { error: error!, session: null };
+  if (error || !session)
+    return {
+      error: error ?? NextResponse.json({ error: "Unauthorized" }, { status: 401 }),
+      session: null,
+    };
 
   const db = getDb();
   const membership = await db
@@ -42,7 +46,12 @@ export async function requireWorkspaceMember(workspaceId: string) {
 
 export async function requireProjectAccess(projectId: string) {
   const { error, session } = await requireSession();
-  if (error || !session) return { error: error!, session: null, project: null };
+  if (error || !session)
+    return {
+      error: error ?? NextResponse.json({ error: "Unauthorized" }, { status: 401 }),
+      session: null,
+      project: null,
+    };
 
   const db = getDb();
   const project = await db

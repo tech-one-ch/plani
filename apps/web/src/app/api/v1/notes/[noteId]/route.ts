@@ -51,7 +51,8 @@ async function getNoteWithAccess(noteId: string, userId: string) {
 export async function GET(_req: NextRequest, { params }: Params) {
   const { noteId } = await params;
   const { error: sessionError, session } = await requireSession();
-  if (sessionError || !session) return sessionError!;
+  if (sessionError || !session)
+    return sessionError ?? NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { note, error } = await getNoteWithAccess(noteId, session.user.id);
   if (error) return error;
@@ -61,10 +62,11 @@ export async function GET(_req: NextRequest, { params }: Params) {
 export async function PATCH(request: NextRequest, { params }: Params) {
   const { noteId } = await params;
   const { error: sessionError, session } = await requireSession();
-  if (sessionError || !session) return sessionError!;
+  if (sessionError || !session)
+    return sessionError ?? NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { note, error } = await getNoteWithAccess(noteId, session.user.id);
-  if (error || !note) return error!;
+  if (error || !note) return error ?? NextResponse.json({ error: "Not Found" }, { status: 404 });
 
   const body = (await request.json()) as unknown;
   const parsed = updateSchema.safeParse(body);
@@ -87,10 +89,11 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 export async function DELETE(_req: NextRequest, { params }: Params) {
   const { noteId } = await params;
   const { error: sessionError, session } = await requireSession();
-  if (sessionError || !session) return sessionError!;
+  if (sessionError || !session)
+    return sessionError ?? NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { note, error } = await getNoteWithAccess(noteId, session.user.id);
-  if (error || !note) return error!;
+  if (error || !note) return error ?? NextResponse.json({ error: "Not Found" }, { status: 404 });
 
   const db = getDb();
   await db.delete(notes).where(eq(notes.id, noteId));

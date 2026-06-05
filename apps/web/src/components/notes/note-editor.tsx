@@ -51,7 +51,7 @@ export function NoteEditor({ note, onUpdate }: Props) {
       setSaveState("unsaved");
       clearTimeout(debounceRef.current);
       debounceRef.current = setTimeout(() => {
-        saveContent(note.id, { content: editor.getHTML() });
+        void saveContent(note.id, { content: editor.getHTML() });
       }, 1000);
     },
   });
@@ -79,7 +79,7 @@ export function NoteEditor({ note, onUpdate }: Props) {
             setSaveState("unsaved");
           }}
           onBlur={() => {
-            if (title !== note.title) saveContent(note.id, { title });
+            if (title !== note.title) void saveContent(note.id, { title });
           }}
           placeholder="Sans titre"
           className="flex-1 bg-transparent text-sm font-semibold focus:outline-none"

@@ -1,40 +1,34 @@
-// apps/web/src/components/project/create-project-modal.tsx
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
+import { toast } from "sonner";
 
-const COLORS = ["#3b82f6", "#8b5cf6", "#22c55e", "#f59e0b", "#ef4444", "#ec4899"];
-
-interface CreateProjectModalProps {
+interface Props {
   workspaceId: string;
   onClose: () => void;
 }
 
-export function CreateProjectModal({ workspaceId, onClose }: CreateProjectModalProps) {
-  const [name, setName] = useState("");
-  const [color, setColor] = useState(COLORS[0]!);
+export function InviteModal({ workspaceId, onClose }: Props) {
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState<"member" | "admin">("member");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!name.trim()) return;
+    if (!email.trim()) return;
     setLoading(true);
-    setError("");
     try {
-      const res = await fetch(`/api/v1/workspaces/${workspaceId}/projects`, {
+      const res = await fetch(`/api/v1/workspaces/${workspaceId}/members/invite`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), color }),
+        body: JSON.stringify({ email: email.trim(), role }),
       });
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) throw new Error();
+      toast.success(`Invitation envoyée à ${email}`);
       onClose();
-      router.refresh();
     } catch {
-      setError("Erreur lors de la création du projet");
+      toast.error("Erreur lors de l'envoi de l'invitation");
     } finally {
       setLoading(false);
     }
@@ -42,8 +36,7 @@ export function CreateProjectModal({ workspaceId, onClose }: CreateProjectModalP
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
       onClick={onClose}
     >
       <div
@@ -56,9 +49,18 @@ export function CreateProjectModal({ workspaceId, onClose }: CreateProjectModalP
       >
         <div className="mb-5 flex items-center justify-between">
           <h2 className="font-semibold" style={{ color: "var(--color-text-white)" }}>
-            Nouveau projet
+            Inviter un membre
           </h2>
-          <button onClick={onClose} style={{ color: "var(--color-text-muted)" }}>
+          <button
+            onClick={onClose}
+            style={{ color: "var(--color-text-muted)" }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "var(--color-text-secondary)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "var(--color-text-muted)";
+            }}
+          >
             <X size={16} />
           </button>
         </div>
@@ -68,13 +70,13 @@ export function CreateProjectModal({ workspaceId, onClose }: CreateProjectModalP
               className="mb-1.5 block text-xs font-medium"
               style={{ color: "var(--color-text-secondary)" }}
             >
-              Nom
+              Adresse e-mail
             </label>
             <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Mon projet"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="collaborateur@exemple.com"
               required
               autoFocus
               className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none"
@@ -83,6 +85,12 @@ export function CreateProjectModal({ workspaceId, onClose }: CreateProjectModalP
                 backgroundColor: "var(--color-bg-app)",
                 color: "var(--color-text-primary)",
               }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = "var(--color-accent)";
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = "var(--color-border-default)";
+              }}
             />
           </div>
           <div>
@@ -90,29 +98,22 @@ export function CreateProjectModal({ workspaceId, onClose }: CreateProjectModalP
               className="mb-1.5 block text-xs font-medium"
               style={{ color: "var(--color-text-secondary)" }}
             >
-              Couleur
+              Rôle
             </label>
-            <div className="flex gap-2">
-              {COLORS.map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => setColor(c)}
-                  className="h-6 w-6 rounded-full transition-transform hover:scale-110"
-                  style={{
-                    backgroundColor: c,
-                    outline: color === c ? "2px solid white" : "none",
-                    outlineOffset: "2px",
-                  }}
-                />
-              ))}
-            </div>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value as "member" | "admin")}
+              className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none"
+              style={{
+                borderColor: "var(--color-border-default)",
+                backgroundColor: "var(--color-bg-app)",
+                color: "var(--color-text-primary)",
+              }}
+            >
+              <option value="member">Member</option>
+              <option value="admin">Admin</option>
+            </select>
           </div>
-          {error && (
-            <p className="text-xs" style={{ color: "var(--color-priority-high)" }}>
-              {error}
-            </p>
-          )}
           <div className="flex justify-end gap-2 pt-1">
             <button
               type="button"
@@ -124,11 +125,11 @@ export function CreateProjectModal({ workspaceId, onClose }: CreateProjectModalP
             </button>
             <button
               type="submit"
-              disabled={loading || !name.trim()}
+              disabled={loading || !email.trim()}
               className="rounded-md px-4 py-1.5 text-sm font-medium text-white disabled:opacity-50"
               style={{ backgroundColor: "var(--color-accent)" }}
             >
-              {loading ? "..." : "Créer"}
+              {loading ? "Envoi..." : "Envoyer l'invitation"}
             </button>
           </div>
         </form>

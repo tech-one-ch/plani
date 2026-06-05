@@ -40,7 +40,7 @@ export function NotesView({
         notes={notes}
         selectedId={selected?.id ?? null}
         onSelect={(note) => setSelected(note)}
-        onNew={handleNew}
+        onNew={() => void handleNew()}
       />
       <div className="flex-1 overflow-hidden">
         {selected ? (

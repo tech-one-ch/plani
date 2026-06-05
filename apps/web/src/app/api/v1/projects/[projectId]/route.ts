@@ -18,7 +18,7 @@ type Params = { params: Promise<{ projectId: string }> };
 export async function GET(_req: NextRequest, { params }: Params) {
   const { projectId } = await params;
   const { error, project } = await requireProjectAccess(projectId);
-  if (error || !project) return error!;
+  if (error || !project) return error ?? NextResponse.json({ error: "Not Found" }, { status: 404 });
   return NextResponse.json(project);
 }
 

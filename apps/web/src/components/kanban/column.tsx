@@ -80,7 +80,7 @@ export function KanbanColumn({ id, label, tasks, onTaskClick, onQuickAdd }: Prop
           type="text"
           value={quickInput}
           onChange={(e) => setQuickInput(e.target.value)}
-          onKeyDown={handleQuickAdd}
+          onKeyDown={(e) => void handleQuickAdd(e)}
           placeholder="+ Ajouter une tâche"
           className="rounded border border-dashed bg-transparent px-2 py-1.5 text-xs focus:outline-none"
           style={{

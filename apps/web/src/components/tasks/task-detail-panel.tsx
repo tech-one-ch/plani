@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { X, Trash2 } from "lucide-react";
 
 type Task = {
@@ -101,7 +101,7 @@ export function TaskDetailPanel({ task, onClose, onUpdate, onDelete }: Props) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             onBlur={() => {
-              if (title !== task.title) save({ title });
+              if (title !== task.title) void save({ title });
             }}
             className="mb-4 w-full bg-transparent text-base font-medium focus:outline-none"
             style={{ color: "var(--color-text-white)" }}
@@ -119,7 +119,7 @@ export function TaskDetailPanel({ task, onClose, onUpdate, onDelete }: Props) {
                 onChange={(e) => {
                   const val = e.target.value as Task["status"];
                   setStatus(val);
-                  save({ status: val });
+                  void save({ status: val });
                 }}
                 className="rounded border px-2 py-1 text-xs focus:outline-none"
                 style={{
@@ -145,7 +145,7 @@ export function TaskDetailPanel({ task, onClose, onUpdate, onDelete }: Props) {
                 onChange={(e) => {
                   const val = e.target.value as Task["priority"];
                   setPriority(val);
-                  save({ priority: val });
+                  void save({ priority: val });
                 }}
                 className="rounded border px-2 py-1 text-xs focus:outline-none"
                 style={{
@@ -171,7 +171,7 @@ export function TaskDetailPanel({ task, onClose, onUpdate, onDelete }: Props) {
                 value={dueDate}
                 onChange={(e) => {
                   setDueDate(e.target.value);
-                  save({ dueDate: e.target.value || null });
+                  void save({ dueDate: e.target.value || null });
                 }}
                 className="rounded border px-2 py-1 text-xs focus:outline-none"
                 style={{
@@ -193,7 +193,7 @@ export function TaskDetailPanel({ task, onClose, onUpdate, onDelete }: Props) {
               onChange={(e) => setDescription(e.target.value)}
               onBlur={() => {
                 if (description !== (task.description ?? ""))
-                  save({ description: description || null });
+                  void save({ description: description || null });
               }}
               rows={5}
               placeholder="Ajouter une description..."
@@ -210,7 +210,7 @@ export function TaskDetailPanel({ task, onClose, onUpdate, onDelete }: Props) {
         {/* Footer */}
         <div className="border-t px-5 py-3" style={{ borderColor: "var(--color-border-subtle)" }}>
           <button
-            onClick={handleDelete}
+            onClick={() => void handleDelete()}
             className="flex items-center gap-1.5 text-xs hover:underline"
             style={{ color: "var(--color-priority-high)" }}
           >
