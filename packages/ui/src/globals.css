@@ -29,3 +29,39 @@
   --color-priority-medium: #f59e0b;
   --color-priority-low: #22c55e;
 }
+
+/* TipTap editor prose overrides for dark theme */
+.prose-note p {
+  color: var(--color-text-primary);
+  margin: 0.75em 0;
+}
+.prose-note h1,
+.prose-note h2,
+.prose-note h3 {
+  color: var(--color-text-white);
+  font-weight: 600;
+}
+.prose-note code {
+  background: var(--color-bg-elevated);
+  border-radius: 3px;
+  padding: 0.1em 0.3em;
+  font-size: 0.875em;
+}
+.prose-note pre {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 6px;
+  padding: 1em;
+}
+.prose-note blockquote {
+  border-left: 3px solid var(--color-border-default);
+  padding-left: 1em;
+  color: var(--color-text-secondary);
+}
+.ProseMirror .is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--color-text-muted);
+  pointer-events: none;
+  float: left;
+  height: 0;
+}
