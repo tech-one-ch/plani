@@ -19,7 +19,7 @@ export default async function HomePage() {
 
   const db = getDb();
 
-  const projectList = await db
+  const rawProjects = await db
     .select({
       id: projects.id,
       name: projects.name,
@@ -29,6 +29,13 @@ export default async function HomePage() {
     .from(projects)
     .where(eq(projects.organizationId, activeOrgId))
     .orderBy(projects.createdAt);
+
+  const projectList = rawProjects.map((p) => ({
+    id: p.id,
+    name: p.name,
+    color: p.color,
+    createdAtLabel: p.createdAt.toLocaleDateString("fr-CH", { day: "numeric", month: "short" }),
+  }));
 
   const assignedTasks =
     projectList.length === 0

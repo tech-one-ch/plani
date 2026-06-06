@@ -6,7 +6,7 @@ import { Plus, FolderOpen, CheckSquare } from "lucide-react";
 import { CreateProjectModal } from "@/components/project/create-project-modal";
 import { CreateOrgModal } from "./create-org-modal";
 
-type Project = { id: string; name: string; color: string; createdAt: Date };
+type Project = { id: string; name: string; color: string; createdAtLabel: string };
 type Task = {
   id: string;
   title: string;
@@ -218,10 +218,7 @@ export function HomeClient({ orgId, projects, assignedTasks }: HomeClientProps) 
                     {project.name}
                   </span>
                   <span className="text-xs" style={{ color: "var(--color-text-muted)" }}>
-                    {new Date(project.createdAt).toLocaleDateString("fr-CH", {
-                      day: "numeric",
-                      month: "short",
-                    })}
+                    {project.createdAtLabel}
                   </span>
                 </Link>
               ))}
