@@ -1,7 +1,6 @@
-// packages/db/src/schema/projects.ts
 import { pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 import { uuidv7 } from "uuidv7";
-import { workspaces } from "./workspaces";
+import { organizations } from "./organizations";
 
 export const projects = pgTable(
   "project",
@@ -9,9 +8,9 @@ export const projects = pgTable(
     id: text("id")
       .primaryKey()
       .$defaultFn(() => uuidv7()),
-    workspaceId: text("workspace_id")
+    organizationId: text("organization_id")
       .notNull()
-      .references(() => workspaces.id, { onDelete: "cascade" }),
+      .references(() => organizations.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
     slug: text("slug").notNull(),
     color: text("color").notNull().default("#3b82f6"),
@@ -21,5 +20,5 @@ export const projects = pgTable(
       .defaultNow()
       .$onUpdateFn(() => new Date()),
   },
-  (t) => [uniqueIndex("project_workspace_slug_idx").on(t.workspaceId, t.slug)],
+  (t) => [uniqueIndex("project_org_slug_idx").on(t.organizationId, t.slug)],
 );

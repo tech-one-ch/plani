@@ -7,14 +7,12 @@ import { ChevronLeft, ChevronRight, LayoutDashboard, Users, Settings, Plus } fro
 import { cn } from "@plani/ui";
 
 type Project = { id: string; name: string; color: string };
-type Workspace = { id: string; name: string };
 
 interface SidebarProps {
-  workspace: Workspace | null;
   projects: Project[];
 }
 
-export function Sidebar({ workspace: _workspace, projects }: SidebarProps) {
+export function Sidebar({ projects }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
 
@@ -29,7 +27,7 @@ export function Sidebar({ workspace: _workspace, projects }: SidebarProps) {
     localStorage.setItem("sidebar-collapsed", String(next));
   }
 
-  const navItems = [{ href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" }];
+  const navItems = [{ href: "/home", icon: LayoutDashboard, label: "Home" }];
 
   const workspaceItems = [
     { href: "/settings/members", icon: Users, label: "Membres" },
@@ -115,7 +113,7 @@ export function Sidebar({ workspace: _workspace, projects }: SidebarProps) {
           </Link>
         ))}
         <Link
-          href="/dashboard"
+          href="/home"
           className={cn(
             "flex items-center gap-2.5 rounded-md px-2 py-1.5 text-xs transition-colors",
             collapsed && "justify-center",

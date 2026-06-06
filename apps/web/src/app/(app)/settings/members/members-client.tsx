@@ -13,14 +13,13 @@ type Member = {
   email: string;
   image: string | null;
 };
-type Workspace = { id: string; name: string };
 
 export function MembersPageClient({
-  workspace,
+  orgId,
   members,
   currentUserId,
 }: {
-  workspace: Workspace;
+  orgId: string;
   members: Member[];
   currentUserId: string;
 }) {
@@ -42,11 +41,9 @@ export function MembersPageClient({
         </button>
       </div>
 
-      <MemberList members={members} workspaceId={workspace.id} currentUserId={currentUserId} />
+      <MemberList members={members} orgId={orgId} currentUserId={currentUserId} />
 
-      {showInvite && (
-        <InviteModal workspaceId={workspace.id} onClose={() => setShowInvite(false)} />
-      )}
+      {showInvite && <InviteModal orgId={orgId} onClose={() => setShowInvite(false)} />}
     </div>
   );
 }

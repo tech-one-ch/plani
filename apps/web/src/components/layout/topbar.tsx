@@ -1,7 +1,5 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { getDb, workspaces, workspaceMembers } from "@plani/db";
-import { eq } from "drizzle-orm";
 import Link from "next/link";
 import { Settings } from "lucide-react";
 
@@ -9,15 +7,15 @@ export async function Topbar() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) return null;
 
-  const db = getDb();
-
-  const userWorkspaces = await db
-    .select({ id: workspaces.id, name: workspaces.name })
-    .from(workspaces)
-    .innerJoin(workspaceMembers, eq(workspaceMembers.workspaceId, workspaces.id))
-    .where(eq(workspaceMembers.userId, session.user.id));
-
-  const activeWorkspace = userWorkspaces[0];
+  const activeOrgId = session.session.activeOrganizationId;
+  let orgName: string | null = null;
+  if (activeOrgId) {
+    const org = await auth.api.getFullOrganization({
+      headers: await headers(),
+      query: { organizationId: activeOrgId },
+    });
+    orgName = org?.name ?? null;
+  }
 
   const initials = session.user.name
     .split(" ")
@@ -33,13 +31,13 @@ export async function Topbar() {
     >
       <div className="flex items-center gap-3">
         <Link
-          href="/dashboard"
+          href="/home"
           className="text-sm font-bold tracking-tight"
           style={{ color: "var(--color-text-white)" }}
         >
           plani
         </Link>
-        {activeWorkspace && (
+        {orgName && (
           <span
             className="rounded border px-2 py-0.5 text-xs"
             style={{
@@ -48,7 +46,7 @@ export async function Topbar() {
               color: "var(--color-text-secondary)",
             }}
           >
-            {activeWorkspace.name}
+            {orgName}
           </span>
         )}
       </div>

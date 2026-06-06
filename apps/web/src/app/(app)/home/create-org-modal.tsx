@@ -1,39 +1,34 @@
-// apps/web/src/components/project/create-project-modal.tsx
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { organization } from "@/lib/auth-client";
+import { toast } from "sonner";
 
-const COLORS = ["#3b82f6", "#8b5cf6", "#22c55e", "#f59e0b", "#ef4444", "#ec4899"];
-
-interface CreateProjectModalProps {
+interface Props {
   onClose: () => void;
 }
 
-export function CreateProjectModal({ onClose }: CreateProjectModalProps) {
+export function CreateOrgModal({ onClose }: Props) {
   const [name, setName] = useState("");
-  const [color, setColor] = useState(COLORS[0]!);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!name.trim()) return;
     setLoading(true);
-    setError("");
     try {
-      const res = await fetch(`/api/v1/projects`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), color }),
+      await organization.create({
+        name: name.trim(),
+        slug: name.trim().toLowerCase().replace(/\s+/g, "-"),
       });
-      if (!res.ok) throw new Error("Failed");
-      onClose();
+      toast.success("Organisation créée");
       router.refresh();
+      onClose();
     } catch {
-      setError("Erreur lors de la création du projet");
+      toast.error("Erreur lors de la création de l'organisation");
     } finally {
       setLoading(false);
     }
@@ -55,9 +50,9 @@ export function CreateProjectModal({ onClose }: CreateProjectModalProps) {
       >
         <div className="mb-5 flex items-center justify-between">
           <h2 className="font-semibold" style={{ color: "var(--color-text-white)" }}>
-            Nouveau projet
+            Nouvelle organisation
           </h2>
-          <button onClick={onClose} style={{ color: "var(--color-text-muted)" }}>
+          <button onClick={onClose} className="icon-hover">
             <X size={16} />
           </button>
         </div>
@@ -73,7 +68,7 @@ export function CreateProjectModal({ onClose }: CreateProjectModalProps) {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Mon projet"
+              placeholder="Mon équipe"
               required
               autoFocus
               className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none"
@@ -84,34 +79,6 @@ export function CreateProjectModal({ onClose }: CreateProjectModalProps) {
               }}
             />
           </div>
-          <div>
-            <label
-              className="mb-1.5 block text-xs font-medium"
-              style={{ color: "var(--color-text-secondary)" }}
-            >
-              Couleur
-            </label>
-            <div className="flex gap-2">
-              {COLORS.map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => setColor(c)}
-                  className="h-6 w-6 rounded-full transition-transform hover:scale-110"
-                  style={{
-                    backgroundColor: c,
-                    outline: color === c ? "2px solid white" : "none",
-                    outlineOffset: "2px",
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-          {error && (
-            <p className="text-xs" style={{ color: "var(--color-priority-high)" }}>
-              {error}
-            </p>
-          )}
           <div className="flex justify-end gap-2 pt-1">
             <button
               type="button"
@@ -127,7 +94,7 @@ export function CreateProjectModal({ onClose }: CreateProjectModalProps) {
               className="rounded-md px-4 py-1.5 text-sm font-medium text-white disabled:opacity-50"
               style={{ backgroundColor: "var(--color-accent)" }}
             >
-              {loading ? "..." : "Créer"}
+              {loading ? "Création..." : "Créer"}
             </button>
           </div>
         </form>

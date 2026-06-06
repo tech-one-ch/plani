@@ -2,7 +2,7 @@ import { getSessionCookie } from "better-auth/cookies";
 import { type NextRequest, NextResponse } from "next/server";
 
 const AUTH_PAGES = ["/login", "/signup", "/reset-password", "/verify-email"];
-const PROTECTED_PREFIXES = ["/dashboard", "/admin", "/projects", "/settings", "/workspace"];
+const PROTECTED_PREFIXES = ["/home", "/dashboard", "/admin", "/projects", "/settings"];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -21,7 +21,7 @@ export function middleware(request: NextRequest) {
   }
 
   if (isAuthPage && session) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/home", request.url));
   }
 
   return NextResponse.next();

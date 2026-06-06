@@ -1,4 +1,4 @@
-import { getDb, notes, projects, workspaceMembers } from "@plani/db";
+import { getDb, notes, projects, members } from "@plani/db";
 import { and, eq } from "drizzle-orm";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -33,13 +33,8 @@ async function getNoteWithAccess(noteId: string, userId: string) {
 
   const member = await db
     .select()
-    .from(workspaceMembers)
-    .where(
-      and(
-        eq(workspaceMembers.workspaceId, project.workspaceId),
-        eq(workspaceMembers.userId, userId),
-      ),
-    )
+    .from(members)
+    .where(and(eq(members.organizationId, project.organizationId), eq(members.userId, userId)))
     .limit(1)
     .then((r) => r[0]);
 

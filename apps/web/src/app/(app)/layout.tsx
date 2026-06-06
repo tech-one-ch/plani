@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { auth } from "@/lib/auth";
-import { getDb, workspaces, projects } from "@plani/db";
+import { getDb, projects } from "@plani/db";
 import { eq } from "drizzle-orm";
 import { Topbar } from "@/components/layout/topbar";
 import { Sidebar } from "@/components/layout/sidebar";
@@ -16,24 +16,14 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
   const activeOrgId = session.session.activeOrganizationId;
   const db = getDb();
 
-  let workspace = null;
   let projectList: { id: string; name: string; color: string }[] = [];
 
   if (activeOrgId) {
-    workspace = await db
-      .select({ id: workspaces.id, name: workspaces.name })
-      .from(workspaces)
-      .where(eq(workspaces.organizationId, activeOrgId))
-      .limit(1)
-      .then((r) => r[0] ?? null);
-
-    if (workspace) {
-      projectList = await db
-        .select({ id: projects.id, name: projects.name, color: projects.color })
-        .from(projects)
-        .where(eq(projects.workspaceId, workspace.id))
-        .orderBy(projects.createdAt);
-    }
+    projectList = await db
+      .select({ id: projects.id, name: projects.name, color: projects.color })
+      .from(projects)
+      .where(eq(projects.organizationId, activeOrgId))
+      .orderBy(projects.createdAt);
   }
 
   return (
@@ -43,7 +33,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
     >
       <Topbar />
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar workspace={workspace} projects={projectList} />
+        <Sidebar projects={projectList} />
         <main className="flex-1 overflow-auto">{children}</main>
       </div>
     </div>

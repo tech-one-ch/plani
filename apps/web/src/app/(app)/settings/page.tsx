@@ -4,30 +4,25 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
-import { getDb, workspaces } from "@plani/db";
-import { eq } from "drizzle-orm";
 
 export default async function SettingsPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect("/login");
 
   const activeOrgId = session.session.activeOrganizationId;
-  if (!activeOrgId) redirect("/workspace/new");
+  if (!activeOrgId) redirect("/home");
 
-  const db = getDb();
-  const workspace = await db
-    .select()
-    .from(workspaces)
-    .where(eq(workspaces.organizationId, activeOrgId))
-    .limit(1)
-    .then((r) => r[0]);
+  const org = await auth.api.getFullOrganization({
+    headers: await headers(),
+    query: { organizationId: activeOrgId },
+  });
 
-  if (!workspace) redirect("/workspace/new");
+  if (!org) redirect("/home");
 
   return (
     <div className="max-w-2xl p-8">
       <h1 className="mb-6 text-xl font-semibold" style={{ color: "var(--color-text-white)" }}>
-        Paramètres du workspace
+        Paramètres de l&apos;organisation
       </h1>
 
       <div
@@ -46,7 +41,7 @@ export default async function SettingsPage() {
               Nom
             </p>
             <p className="text-sm" style={{ color: "var(--color-text-primary)" }}>
-              {workspace.name}
+              {org.name}
             </p>
           </div>
           <div>
@@ -54,7 +49,7 @@ export default async function SettingsPage() {
               Slug
             </p>
             <p className="font-mono text-sm" style={{ color: "var(--color-text-secondary)" }}>
-              {workspace.slug}
+              {org.slug ?? "—"}
             </p>
           </div>
         </div>

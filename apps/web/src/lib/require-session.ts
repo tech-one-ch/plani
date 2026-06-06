@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "./auth";
-import { getDb, workspaceMembers, projects } from "@plani/db";
+import { getDb, members, projects } from "@plani/db";
 import { and, eq } from "drizzle-orm";
 
 export async function requireSession() {
@@ -15,7 +15,7 @@ export async function requireSession() {
   return { error: null, session };
 }
 
-export async function requireWorkspaceMember(workspaceId: string) {
+export async function requireOrgMember(organizationId: string) {
   const { error, session } = await requireSession();
   if (error || !session)
     return {
@@ -27,13 +27,8 @@ export async function requireWorkspaceMember(workspaceId: string) {
   const db = getDb();
   const [member] = await db
     .select()
-    .from(workspaceMembers)
-    .where(
-      and(
-        eq(workspaceMembers.workspaceId, workspaceId),
-        eq(workspaceMembers.userId, session.user.id),
-      ),
-    )
+    .from(members)
+    .where(and(eq(members.organizationId, organizationId), eq(members.userId, session.user.id)))
     .limit(1);
 
   if (!member) {
@@ -57,13 +52,7 @@ export async function requireProjectAccess(projectId: string) {
 
   const db = getDb();
   const project = await db
-    .select({
-      id: projects.id,
-      workspaceId: projects.workspaceId,
-      name: projects.name,
-      slug: projects.slug,
-      color: projects.color,
-    })
+    .select()
     .from(projects)
     .where(eq(projects.id, projectId))
     .limit(1)
@@ -77,18 +66,15 @@ export async function requireProjectAccess(projectId: string) {
     };
   }
 
-  const membership = await db
+  const [membership] = await db
     .select()
-    .from(workspaceMembers)
+    .from(members)
     .where(
-      and(
-        eq(workspaceMembers.workspaceId, project.workspaceId),
-        eq(workspaceMembers.userId, session.user.id),
-      ),
+      and(eq(members.organizationId, project.organizationId), eq(members.userId, session.user.id)),
     )
     .limit(1);
 
-  if (!membership.length) {
+  if (!membership) {
     return {
       error: NextResponse.json({ error: "Forbidden" }, { status: 403 }),
       session: null,

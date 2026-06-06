@@ -15,17 +15,17 @@ type Member = {
 
 interface Props {
   members: Member[];
-  workspaceId: string;
+  orgId: string;
   currentUserId: string;
 }
 
-export function MemberList({ members: initial, workspaceId, currentUserId }: Props) {
+export function MemberList({ members: initial, orgId, currentUserId }: Props) {
   const [members, setMembers] = useState(initial);
 
   async function handleRemove(userId: string, name: string) {
-    if (!confirm(`Retirer ${name} du workspace ?`)) return;
+    if (!confirm(`Retirer ${name} de l'organisation ?`)) return;
     try {
-      const res = await fetch(`/api/v1/workspaces/${workspaceId}/members`, {
+      const res = await fetch(`/api/v1/organizations/${orgId}/members`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId }),

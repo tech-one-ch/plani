@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1779974399612,
-      "tag": "0000_special_spot",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1780688989004,
-      "tag": "0001_lazy_arachne",
+      "when": 1780776890597,
+      "tag": "0000_silly_warpath",
       "breakpoints": true
     }
   ]

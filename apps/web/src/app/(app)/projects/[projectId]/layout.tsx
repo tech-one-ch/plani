@@ -5,7 +5,7 @@ import { notFound, redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
-import { getDb, projects, workspaceMembers } from "@plani/db";
+import { getDb, projects, members } from "@plani/db";
 import { and, eq } from "drizzle-orm";
 
 const TABS = [
@@ -37,12 +37,9 @@ export default async function ProjectLayout({ children, params }: Props) {
 
   const member = await db
     .select()
-    .from(workspaceMembers)
+    .from(members)
     .where(
-      and(
-        eq(workspaceMembers.workspaceId, project.workspaceId),
-        eq(workspaceMembers.userId, session.user.id),
-      ),
+      and(eq(members.organizationId, project.organizationId), eq(members.userId, session.user.id)),
     )
     .limit(1)
     .then((r) => r[0]);

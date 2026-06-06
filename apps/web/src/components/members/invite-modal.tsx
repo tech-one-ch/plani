@@ -5,11 +5,11 @@ import { X } from "lucide-react";
 import { toast } from "sonner";
 
 interface Props {
-  workspaceId: string;
+  orgId: string;
   onClose: () => void;
 }
 
-export function InviteModal({ workspaceId, onClose }: Props) {
+export function InviteModal({ orgId, onClose }: Props) {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<"member" | "admin">("member");
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ export function InviteModal({ workspaceId, onClose }: Props) {
     if (!email.trim()) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/v1/workspaces/${workspaceId}/members/invite`, {
+      const res = await fetch(`/api/v1/organizations/${orgId}/members/invite`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim(), role }),
