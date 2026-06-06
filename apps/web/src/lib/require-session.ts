@@ -21,10 +21,11 @@ export async function requireWorkspaceMember(workspaceId: string) {
     return {
       error: error ?? NextResponse.json({ error: "Unauthorized" }, { status: 401 }),
       session: null,
+      member: null,
     };
 
   const db = getDb();
-  const membership = await db
+  const [member] = await db
     .select()
     .from(workspaceMembers)
     .where(
@@ -35,13 +36,14 @@ export async function requireWorkspaceMember(workspaceId: string) {
     )
     .limit(1);
 
-  if (!membership.length) {
+  if (!member) {
     return {
       error: NextResponse.json({ error: "Forbidden" }, { status: 403 }),
       session: null,
+      member: null,
     };
   }
-  return { error: null, session };
+  return { error: null, session, member };
 }
 
 export async function requireProjectAccess(projectId: string) {

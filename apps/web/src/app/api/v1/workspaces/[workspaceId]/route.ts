@@ -31,8 +31,10 @@ export async function GET(_req: NextRequest, { params }: Params) {
 
 export async function PATCH(request: NextRequest, { params }: Params) {
   const { workspaceId } = await params;
-  const { error } = await requireWorkspaceMember(workspaceId);
+  const { error, member } = await requireWorkspaceMember(workspaceId);
   if (error) return error;
+  if (!member || member.role !== "admin")
+    return NextResponse.json({ error: "Forbidden: admin role required" }, { status: 403 });
 
   const body = (await request.json()) as unknown;
   const parsed = updateSchema.safeParse(body);

@@ -32,9 +32,11 @@ const removeSchema = z.object({ userId: z.string() });
 
 export async function DELETE(request: NextRequest, { params }: Params) {
   const { workspaceId } = await params;
-  const { error, session } = await requireWorkspaceMember(workspaceId);
-  if (error || !session)
+  const { error, session, member } = await requireWorkspaceMember(workspaceId);
+  if (error || !session || !member)
     return error ?? NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (member.role !== "admin")
+    return NextResponse.json({ error: "Forbidden: admin role required" }, { status: 403 });
 
   const body = (await request.json()) as unknown;
   const parsed = removeSchema.safeParse(body);
