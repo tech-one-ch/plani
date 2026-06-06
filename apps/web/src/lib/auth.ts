@@ -47,14 +47,8 @@ async function trySendEmail(fn: () => Promise<void>, context: string): Promise<v
 
 const appUrl = process.env["APP_URL"] ?? "http://localhost:3000";
 
-// TRUSTED_ORIGINS accepts a comma-separated list of extra allowed origins,
-// useful when the app is accessed via a network IP, tunnel, or proxy.
-const extraOrigins = (process.env["TRUSTED_ORIGINS"] ?? "")
-  .split(",")
-  .map((o) => o.trim())
-  .filter(Boolean);
-
-const trustedOrigins = Array.from(new Set([appUrl, ...extraOrigins]));
+// Always trust APP_URL + localhost so the app works whether accessed by IP or locally.
+const trustedOrigins = Array.from(new Set([appUrl, "http://localhost:3000"]));
 
 export const auth = betterAuth({
   baseURL: appUrl,
