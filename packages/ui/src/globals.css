@@ -16,7 +16,7 @@
   /* Text */
   --color-text-primary: #e0e0e0;
   --color-text-secondary: #888888;
-  --color-text-muted: #444444;
+  --color-text-muted: #666666;
   --color-text-white: #ffffff;
 
   /* Accent — blue */
@@ -28,6 +28,12 @@
   --color-priority-high: #ef4444;
   --color-priority-medium: #f59e0b;
   --color-priority-low: #22c55e;
+}
+
+/* Input placeholder */
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-muted);
 }
 
 /* TipTap editor prose overrides for dark theme */
