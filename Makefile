@@ -4,9 +4,9 @@
 .PHONY: help dev dev-docker prod install migrate seed build lint typecheck test \
         down down-all clean format
 
-COMPOSE_DEV  = docker compose -f docker-compose.dev.yml
-COMPOSE_FULL = docker compose -f docker-compose.dev.yml -f docker-compose.full.yml
-COMPOSE_PROD = docker compose
+COMPOSE_DEV  = docker compose -f docker/docker-compose.dev.yml
+COMPOSE_FULL = docker compose -f docker/docker-compose.dev.yml -f docker/docker-compose.full.yml
+COMPOSE_PROD = docker compose -f docker/docker-compose.yml
 
 # ── Help ─────────────────────────────────────────────────────────────────────
 

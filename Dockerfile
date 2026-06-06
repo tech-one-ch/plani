@@ -55,8 +55,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 # Migration runner — SQL files + postgres.js (bundled separately from webpack standalone)
 COPY --from=builder --chown=nextjs:nodejs /app/packages/db/src/migrations ./migrations
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.pnpm/postgres@3.4.9/node_modules/postgres ./node_modules/postgres
-COPY --chown=nextjs:nodejs docker-migrate.mjs ./docker-migrate.mjs
-COPY --chown=nextjs:nodejs docker-entrypoint.sh ./docker-entrypoint.sh
+COPY --chown=nextjs:nodejs docker/docker-migrate.mjs ./docker-migrate.mjs
+COPY --chown=nextjs:nodejs docker/docker-entrypoint.sh ./docker-entrypoint.sh
 RUN chmod +x ./docker-entrypoint.sh
 
 USER nextjs
