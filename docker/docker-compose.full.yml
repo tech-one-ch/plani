@@ -2,7 +2,7 @@
 # Useful for testing the Docker image locally before pushing.
 #
 # Usage:
-#   docker compose -f docker-compose.dev.yml -f docker-compose.full.yml up --build
+#   docker compose -f docker/docker-compose.dev.yml -f docker/docker-compose.full.yml up --build
 #   make dev-docker
 
 name: plani-dev-full
@@ -10,7 +10,7 @@ name: plani-dev-full
 services:
   web:
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
