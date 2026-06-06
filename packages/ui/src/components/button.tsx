@@ -6,16 +6,16 @@ import * as React from "react";
 import { cn } from "../lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:ring-[var(--color-accent)] focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        default: "bg-zinc-900 text-zinc-50 hover:bg-zinc-800",
+        default: "bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)]",
         outline:
-          "border border-zinc-200 bg-white text-zinc-900 hover:bg-zinc-50 hover:text-zinc-900",
-        ghost: "text-zinc-900 hover:bg-zinc-100",
+          "border border-[var(--color-border-default)] bg-transparent text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)]",
+        ghost: "text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)]",
         destructive: "bg-red-600 text-white hover:bg-red-500",
-        link: "text-zinc-900 underline-offset-4 hover:underline",
+        link: "text-[var(--color-accent)] underline-offset-4 hover:underline",
       },
       size: {
         sm: "h-8 px-3 text-xs",

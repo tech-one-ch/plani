@@ -32,18 +32,31 @@ export default async function SetupPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 px-4">
+    <div
+      className="flex min-h-screen flex-col items-center justify-center px-4"
+      style={{ backgroundColor: "var(--color-bg-app)" }}
+    >
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-zinc-900">Welcome to Plani</h1>
-          <p className="mt-2 text-zinc-500">
+          <h1 className="text-3xl font-bold" style={{ color: "var(--color-text-white)" }}>
+            Welcome to Plani
+          </h1>
+          <p className="mt-2" style={{ color: "var(--color-text-secondary)" }}>
             Create the admin account for this instance to get started.
           </p>
         </div>
 
-        <div className="rounded-xl border border-zinc-200 bg-white p-8 shadow-sm">
-          <h2 className="mb-1 text-lg font-semibold text-zinc-800">Admin account</h2>
-          <p className="mb-6 text-sm text-zinc-500">
+        <div
+          className="rounded-xl border p-8"
+          style={{
+            backgroundColor: "var(--color-bg-elevated)",
+            borderColor: "var(--color-border-default)",
+          }}
+        >
+          <h2 className="mb-1 text-lg font-semibold" style={{ color: "var(--color-text-primary)" }}>
+            Admin account
+          </h2>
+          <p className="mb-6 text-sm" style={{ color: "var(--color-text-secondary)" }}>
             This account will be the owner of this Plani instance. You can add more administrators
             later from the admin panel.
           </p>
