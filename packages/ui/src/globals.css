@@ -30,13 +30,20 @@
   --color-priority-low: #22c55e;
 }
 
-/* Hover-on-icon links inside server components (no JS event handlers) */
+/* Hover utilities — use instead of onMouseEnter/onMouseLeave */
 .icon-hover {
   color: var(--color-text-muted);
   transition: color 150ms;
 }
 .icon-hover:hover {
   color: var(--color-text-secondary);
+}
+.icon-hover-danger {
+  color: var(--color-text-muted);
+  transition: color 150ms;
+}
+.icon-hover-danger:hover {
+  color: var(--color-priority-high);
 }
 
 /* Input placeholder */

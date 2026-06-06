@@ -138,14 +138,7 @@ export function MemberList({ members: initial, workspaceId, currentUserId }: Pro
                 {member.userId !== currentUserId && (
                   <button
                     onClick={() => void handleRemove(member.userId, member.name)}
-                    className="transition-colors"
-                    style={{ color: "var(--color-text-muted)" }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = "var(--color-priority-high)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = "var(--color-text-muted)";
-                    }}
+                    className="icon-hover-danger"
                     title="Retirer ce membre"
                   >
                     <Trash2 size={13} />

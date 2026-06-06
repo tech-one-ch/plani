@@ -16,7 +16,7 @@ export default async function MembersPage() {
 
   const db = getDb();
   const workspace = await db
-    .select()
+    .select({ id: workspaces.id, name: workspaces.name })
     .from(workspaces)
     .where(eq(workspaces.organizationId, activeOrgId))
     .limit(1)

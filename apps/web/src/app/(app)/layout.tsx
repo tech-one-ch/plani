@@ -21,7 +21,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
 
   if (activeOrgId) {
     workspace = await db
-      .select()
+      .select({ id: workspaces.id, name: workspaces.name })
       .from(workspaces)
       .where(eq(workspaces.organizationId, activeOrgId))
       .limit(1)

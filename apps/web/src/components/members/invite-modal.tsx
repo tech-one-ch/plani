@@ -51,16 +51,7 @@ export function InviteModal({ workspaceId, onClose }: Props) {
           <h2 className="font-semibold" style={{ color: "var(--color-text-white)" }}>
             Inviter un membre
           </h2>
-          <button
-            onClick={onClose}
-            style={{ color: "var(--color-text-muted)" }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = "var(--color-text-secondary)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = "var(--color-text-muted)";
-            }}
-          >
+          <button onClick={onClose} className="icon-hover">
             <X size={16} />
           </button>
         </div>
