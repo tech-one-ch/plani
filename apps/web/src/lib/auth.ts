@@ -45,12 +45,23 @@ async function trySendEmail(fn: () => Promise<void>, context: string): Promise<v
   }
 }
 
+const appUrl = process.env["APP_URL"] ?? "http://localhost:3000";
+
+// TRUSTED_ORIGINS accepts a comma-separated list of extra allowed origins,
+// useful when the app is accessed via a network IP, tunnel, or proxy.
+const extraOrigins = (process.env["TRUSTED_ORIGINS"] ?? "")
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+const trustedOrigins = Array.from(new Set([appUrl, ...extraOrigins]));
+
 export const auth = betterAuth({
-  baseURL: process.env["APP_URL"] ?? "http://localhost:3000",
+  baseURL: appUrl,
   // Falls back to a dev placeholder so the app starts without a secret configured.
   // Changing this in production invalidates all existing sessions.
   secret: process.env["AUTH_SECRET"] ?? "dev-secret-replace-in-production",
-  trustedOrigins: [process.env["APP_URL"] ?? "http://localhost:3000"],
+  trustedOrigins,
 
   database: drizzleAdapter(db, {
     provider: "pg",
