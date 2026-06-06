@@ -30,6 +30,15 @@
   --color-priority-low: #22c55e;
 }
 
+/* Hover-on-icon links inside server components (no JS event handlers) */
+.icon-hover {
+  color: var(--color-text-muted);
+  transition: color 150ms;
+}
+.icon-hover:hover {
+  color: var(--color-text-secondary);
+}
+
 /* Input placeholder */
 input::placeholder,
 textarea::placeholder {

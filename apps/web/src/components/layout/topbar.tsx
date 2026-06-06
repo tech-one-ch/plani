@@ -53,17 +53,7 @@ export async function Topbar() {
         )}
       </div>
       <div className="flex items-center gap-3">
-        <Link
-          href="/settings"
-          className="transition-colors"
-          style={{ color: "var(--color-text-muted)" }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = "var(--color-text-secondary)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = "var(--color-text-muted)";
-          }}
-        >
+        <Link href="/settings" className="icon-hover">
           <Settings size={15} />
         </Link>
         <div
