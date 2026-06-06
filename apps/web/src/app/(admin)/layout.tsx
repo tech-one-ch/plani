@@ -9,7 +9,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const session = await auth.api.getSession({ headers: await headers() });
 
   if (!session) redirect("/login");
-  if (session.user.role !== "admin") redirect("/dashboard");
+  if (session.user.role !== "admin") redirect("/home");
 
   return (
     <div className="min-h-screen bg-zinc-50">
@@ -45,6 +45,14 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             </li>
             <li>
               <a
+                href="/admin/organizations"
+                className="block rounded-md px-3 py-2 font-medium text-zinc-700 hover:bg-zinc-100"
+              >
+                Organizations
+              </a>
+            </li>
+            <li>
+              <a
                 href="/admin/settings"
                 className="block rounded-md px-3 py-2 font-medium text-zinc-700 hover:bg-zinc-100"
               >
@@ -53,7 +61,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             </li>
             <li className="border-t border-zinc-200 pt-4">
               <a
-                href="/dashboard"
+                href="/home"
                 className="block rounded-md px-3 py-2 text-zinc-500 hover:bg-zinc-100"
               >
                 ← Back to app
