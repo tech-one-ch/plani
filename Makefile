@@ -67,11 +67,11 @@ format: ## Auto-format with Prettier
 
 # ── Cleanup ──────────────────────────────────────────────────────────────────
 
-down: ## Stop dev infrastructure
-	$(COMPOSE_DEV) down
+down: ## Stop dev stack (infra + local build if running)
+	$(COMPOSE_FULL) down
 
-down-all: ## Stop dev infrastructure and remove volumes (deletes DB data)
-	$(COMPOSE_DEV) down -v
+down-all: ## Stop dev stack and remove volumes (deletes DB data)
+	$(COMPOSE_FULL) down -v
 
 clean: ## Remove build outputs and node_modules
 	pnpm clean

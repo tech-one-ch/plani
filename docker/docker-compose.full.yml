@@ -5,8 +5,6 @@
 #   docker compose -f docker/docker-compose.dev.yml -f docker/docker-compose.full.yml up --build
 #   make dev-docker
 
-name: plani-dev-full
-
 services:
   web:
     build:
