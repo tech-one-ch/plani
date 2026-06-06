@@ -17,7 +17,7 @@ ENV TURBO_TELEMETRY_DISABLED=1
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Copy workspace manifests and lockfile first (layer cache for install step)
-COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml .npmrc ./
 COPY apps/web/package.json ./apps/web/package.json
 COPY packages/auth/package.json ./packages/auth/package.json
 COPY packages/config/package.json ./packages/config/package.json
