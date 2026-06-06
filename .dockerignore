@@ -32,4 +32,4 @@ CONTRIBUTING.md
 CHANGELOG.md
 docs/
 .github/
-docker/
+docker/docker-compose*.yml
