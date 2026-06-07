@@ -1,5 +1,5 @@
-import { getDb, tasks } from "@plani/db";
-import { asc, eq } from "drizzle-orm";
+import { getDb, members, tasks } from "@plani/db";
+import { and, asc, eq } from "drizzle-orm";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { requireProjectAccess } from "@/lib/require-session";
@@ -33,7 +33,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
 
 export async function POST(request: NextRequest, { params }: Params) {
   const { projectId } = await params;
-  const { error } = await requireProjectAccess(projectId);
+  const { error, project } = await requireProjectAccess(projectId);
   if (error) return error;
 
   const body = (await request.json()) as unknown;
@@ -43,6 +43,25 @@ export async function POST(request: NextRequest, { params }: Params) {
   }
 
   const db = getDb();
+
+  if (parsed.data.assignee_id) {
+    const [m] = await db
+      .select({ id: members.id })
+      .from(members)
+      .where(
+        and(
+          eq(members.organizationId, project.organizationId),
+          eq(members.userId, parsed.data.assignee_id),
+        ),
+      )
+      .limit(1);
+    if (!m)
+      return NextResponse.json(
+        { error: "Assignee is not a member of this organization" },
+        { status: 400 },
+      );
+  }
+
   const task = await db
     .insert(tasks)
     .values({

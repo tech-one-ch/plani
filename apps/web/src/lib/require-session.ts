@@ -81,5 +81,5 @@ export async function requireProjectAccess(projectId: string) {
       project: null,
     };
   }
-  return { error: null, session, project };
+  return { error: null, session, project, member: membership };
 }
