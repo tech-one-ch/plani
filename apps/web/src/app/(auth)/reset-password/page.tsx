@@ -55,7 +55,7 @@ export default function ResetPasswordPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-center text-sm text-zinc-500">
+          <p className="text-center text-sm" style={{ color: "var(--color-text-secondary)" }}>
             <Link href="/login" className="hover:underline">
               Back to sign in
             </Link>
@@ -82,7 +82,7 @@ export default function ResetPasswordPage() {
             {loading ? "Sending…" : "Send reset link"}
           </Button>
         </form>
-        <p className="text-center text-sm text-zinc-500">
+        <p className="text-center text-sm" style={{ color: "var(--color-text-secondary)" }}>
           <Link href="/login" className="hover:underline">
             Back to sign in
           </Link>

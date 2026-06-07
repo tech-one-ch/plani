@@ -68,3 +68,4 @@ storybook-static/
 
 # pnpm
 .npmrc.local
+.superpowers/

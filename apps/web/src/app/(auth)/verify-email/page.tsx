@@ -36,7 +36,7 @@ export default function VerifyEmailPage() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <p className="text-center text-sm text-zinc-500">
+        <p className="text-center text-sm" style={{ color: "var(--color-text-secondary)" }}>
           Didn&apos;t receive it? Check your spam folder or resend below.
         </p>
         <Button
@@ -47,7 +47,7 @@ export default function VerifyEmailPage() {
         >
           {resending ? "Sending…" : "Resend verification email"}
         </Button>
-        <p className="text-center text-sm text-zinc-500">
+        <p className="text-center text-sm" style={{ color: "var(--color-text-secondary)" }}>
           <Link href="/login" className="hover:underline">
             Back to sign in
           </Link>
