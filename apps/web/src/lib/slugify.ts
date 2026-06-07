@@ -10,3 +10,11 @@ export function slugify(name: string): string {
       .substring(0, 50) || "untitled"
   );
 }
+
+export function uniqueSlug(base: string, existing: string[]): string {
+  const set = new Set(existing);
+  if (!set.has(base)) return base;
+  let i = 2;
+  while (set.has(`${base}-${i}`)) i++;
+  return `${base}-${i}`;
+}
