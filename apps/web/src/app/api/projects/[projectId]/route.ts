@@ -56,6 +56,8 @@ export async function DELETE(
 ) {
   const auth = await requireOrgMember();
   if (!auth.ok) return auth.response;
+  if (!["owner", "admin"].includes(auth.role))
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { projectId } = await params;
   const project = await getProjectForOrg(projectId, auth.orgId);

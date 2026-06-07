@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { auth } from "./auth";
 
 type OrgMemberResult =
-  | { ok: true; userId: string; orgId: string }
+  | { ok: true; userId: string; orgId: string; role: string }
   | { ok: false; response: NextResponse };
 
 /**
@@ -46,5 +46,5 @@ export async function requireOrgMember(): Promise<OrgMemberResult> {
     };
   }
 
-  return { ok: true, userId: session.user.id, orgId };
+  return { ok: true, userId: session.user.id, orgId, role: membership.role };
 }

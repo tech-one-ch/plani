@@ -1,4 +1,4 @@
-import { getDb, projects, tasks } from "@plani/db";
+import { getDb, members, projects, tasks } from "@plani/db";
 import { and, eq } from "drizzle-orm";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -13,7 +13,7 @@ const updateSchema = z.object({
   dueDate: z.string().datetime().nullable().optional(),
   position: z.number().int().min(0).optional(),
   // For DnD reorder: new ordered list of task IDs in the affected column(s)
-  affectedIds: z.array(z.string()).optional(),
+  affectedIds: z.array(z.string()).max(500).optional(),
 });
 
 async function getTaskForOrg(taskId: string, orgId: string) {
@@ -44,6 +44,21 @@ export async function PATCH(
   }
 
   const db = getDb();
+
+  if (parsed.data.assigneeId) {
+    const [m] = await db
+      .select({ id: members.id })
+      .from(members)
+      .where(
+        and(eq(members.organizationId, auth.orgId), eq(members.userId, parsed.data.assigneeId)),
+      );
+    if (!m)
+      return NextResponse.json(
+        { error: "Assignee is not a member of this organization" },
+        { status: 400 },
+      );
+  }
+
   const { affectedIds, dueDate, ...rest } = parsed.data;
 
   // Build the update payload (exclude undefined values)
@@ -52,12 +67,16 @@ export async function PATCH(
     update.dueDate = dueDate ? new Date(dueDate) : null;
   }
 
-  // Batch-update positions for DnD reorder in a transaction
+  // Batch-update positions for DnD reorder in a transaction.
+  // Scope each update to task.projectId so cross-tenant IDs are silently ignored.
   if (affectedIds && affectedIds.length > 0) {
     await db.transaction(async (tx) => {
       await tx.update(tasks).set(update).where(eq(tasks.id, taskId));
       for (const [index, id] of affectedIds.entries()) {
-        await tx.update(tasks).set({ position: index }).where(eq(tasks.id, id));
+        await tx
+          .update(tasks)
+          .set({ position: index })
+          .where(and(eq(tasks.id, id), eq(tasks.projectId, task.projectId)));
       }
     });
     const [updated] = await db.select().from(tasks).where(eq(tasks.id, taskId));

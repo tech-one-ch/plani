@@ -1,4 +1,4 @@
-import { getDb, projects, tasks } from "@plani/db";
+import { getDb, members, projects, tasks } from "@plani/db";
 import { and, count, eq } from "drizzle-orm";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -61,6 +61,20 @@ export async function POST(
   }
 
   const db = getDb();
+
+  if (parsed.data.assigneeId) {
+    const [m] = await db
+      .select({ id: members.id })
+      .from(members)
+      .where(
+        and(eq(members.organizationId, auth.orgId), eq(members.userId, parsed.data.assigneeId)),
+      );
+    if (!m)
+      return NextResponse.json(
+        { error: "Assignee is not a member of this organization" },
+        { status: 400 },
+      );
+  }
 
   // Position = number of existing tasks in this column
   const [countRow] = await db
