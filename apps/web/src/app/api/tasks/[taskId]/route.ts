@@ -7,10 +7,10 @@ import { requireOrgMember } from "@/lib/require-org-member";
 const updateSchema = z.object({
   title: z.string().min(1).max(200).optional(),
   description: z.string().max(5000).nullable().optional(),
-  status: z.enum(["todo", "in_progress", "done"]).optional(),
-  priority: z.enum(["low", "medium", "high"]).nullable().optional(),
+  status: z.enum(["backlog", "todo", "in_progress", "done"]).optional(),
+  priority: z.enum(["low", "medium", "high"]).optional(),
   assigneeId: z.string().nullable().optional(),
-  dueDate: z.string().datetime().nullable().optional(),
+  dueDate: z.string().date().nullable().optional(),
   position: z.number().int().min(0).optional(),
   // For DnD reorder: new ordered list of task IDs in the affected column(s)
   affectedIds: z.array(z.string()).max(500).optional(),
@@ -64,7 +64,7 @@ export async function PATCH(
   // Build the update payload (exclude undefined values)
   const update: Partial<typeof tasks.$inferInsert> = { ...rest };
   if (dueDate !== undefined) {
-    update.dueDate = dueDate ? new Date(dueDate) : null;
+    update.dueDate = dueDate ?? null;
   }
 
   // Batch-update positions for DnD reorder in a transaction.

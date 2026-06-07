@@ -6,11 +6,9 @@ import { requireOrgMember } from "@/lib/require-org-member";
 
 const updateSchema = z.object({
   name: z.string().min(1).max(80).optional(),
-  description: z.string().max(500).nullable().optional(),
   color: z
     .string()
     .regex(/^#[0-9a-fA-F]{6}$/)
-    .nullable()
     .optional(),
 });
 

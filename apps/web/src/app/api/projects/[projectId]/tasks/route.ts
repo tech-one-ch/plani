@@ -7,10 +7,10 @@ import { requireOrgMember } from "@/lib/require-org-member";
 const createTaskSchema = z.object({
   title: z.string().min(1).max(200),
   description: z.string().max(5000).optional(),
-  status: z.enum(["todo", "in_progress", "done"]).default("todo"),
+  status: z.enum(["backlog", "todo", "in_progress", "done"]).default("backlog"),
   priority: z.enum(["low", "medium", "high"]).optional(),
   assigneeId: z.string().optional(),
-  dueDate: z.string().datetime().optional(),
+  dueDate: z.string().date().optional(),
 });
 
 async function getProjectForOrg(projectId: string, orgId: string) {
@@ -93,9 +93,8 @@ export async function POST(
       status: parsed.data.status,
       priority: parsed.data.priority,
       assigneeId: parsed.data.assigneeId,
-      dueDate: parsed.data.dueDate ? new Date(parsed.data.dueDate) : undefined,
+      dueDate: parsed.data.dueDate ?? undefined,
       position,
-      createdBy: auth.userId,
     })
     .returning();
 
