@@ -1,56 +1,41 @@
 export const dynamic = "force-dynamic";
 
 import { headers } from "next/headers";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { auth } from "@/lib/auth";
-import { OrgSwitcher } from "./org-switcher";
+import { getDb, projects } from "@plani/db";
+import { eq } from "drizzle-orm";
+import { Topbar } from "@/components/layout/topbar";
+import { Sidebar } from "@/components/layout/sidebar";
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
-  const h = await headers();
-  const session = await auth.api.getSession({ headers: h });
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) redirect("/login");
 
-  if (!session) {
-    redirect("/login");
-  }
+  const activeOrgId = session.session.activeOrganizationId;
+  const db = getDb();
 
-  const activeOrgId = session.session.activeOrganizationId ?? null;
+  let projectList: { id: string; name: string; color: string }[] = [];
 
-  // Fetch orgs the user belongs to for the switcher
-  let orgs: { id: string; name: string }[] = [];
-  let activeOrgName: string | null = null;
-  try {
-    const result = await auth.api.listOrganizations({ headers: h });
-    if (Array.isArray(result)) {
-      orgs = result.map((o) => ({ id: o.id, name: o.name }));
-      activeOrgName = orgs.find((o) => o.id === activeOrgId)?.name ?? null;
-    }
-  } catch {
-    // org list unavailable — switcher will be empty, not a blocker
+  if (activeOrgId) {
+    projectList = await db
+      .select({ id: projects.id, name: projects.name, color: projects.color })
+      .from(projects)
+      .where(eq(projects.organizationId, activeOrgId))
+      .orderBy(projects.createdAt);
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50">
-      <header className="border-b border-zinc-200 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-4">
-            <Link href="/dashboard" className="text-lg font-bold text-zinc-900">
-              Plani
-            </Link>
-            <OrgSwitcher orgs={orgs} activeOrgId={activeOrgId} activeOrgName={activeOrgName} />
-          </div>
-          <div className="flex items-center gap-4">
-            {session.user.role === "admin" && (
-              <Link href="/admin" className="text-xs text-zinc-400 hover:text-zinc-700">
-                Admin panel
-              </Link>
-            )}
-            <span className="text-sm text-zinc-500">{session.user.name}</span>
-          </div>
-        </div>
-      </header>
-      <main className="mx-auto max-w-7xl px-4 py-8">{children}</main>
+    <div
+      className="flex h-screen flex-col"
+      style={{ backgroundColor: "var(--color-bg-app)", color: "var(--color-text-primary)" }}
+    >
+      <Topbar />
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar projects={projectList} />
+        <main className="flex-1 overflow-auto">{children}</main>
+      </div>
     </div>
   );
 }

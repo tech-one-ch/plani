@@ -1,20 +1,16 @@
-/**
- * Converts a string to a URL-safe slug.
- * "My Project!" → "my-project"
- */
-export function slugify(str: string): string {
-  return str
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/[\s_]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+export function slugify(name: string): string {
+  return (
+    name
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/[\s_]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "")
+      .substring(0, 50) || "untitled"
+  );
 }
 
-/**
- * Returns a slug that is unique within a set of existing slugs.
- * If "my-project" exists, returns "my-project-2", then "my-project-3", etc.
- */
 export function uniqueSlug(base: string, existing: string[]): string {
   const set = new Set(existing);
   if (!set.has(base)) return base;

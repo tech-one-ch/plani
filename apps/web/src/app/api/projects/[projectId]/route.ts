@@ -6,11 +6,9 @@ import { requireOrgMember } from "@/lib/require-org-member";
 
 const updateSchema = z.object({
   name: z.string().min(1).max(80).optional(),
-  description: z.string().max(500).nullable().optional(),
   color: z
     .string()
     .regex(/^#[0-9a-fA-F]{6}$/)
-    .nullable()
     .optional(),
 });
 
@@ -56,6 +54,8 @@ export async function DELETE(
 ) {
   const auth = await requireOrgMember();
   if (!auth.ok) return auth.response;
+  if (!["owner", "admin"].includes(auth.role))
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { projectId } = await params;
   const project = await getProjectForOrg(projectId, auth.orgId);

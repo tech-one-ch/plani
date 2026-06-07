@@ -7,7 +7,6 @@ import { slugify, uniqueSlug } from "@/lib/slugify";
 
 const createSchema = z.object({
   name: z.string().min(1).max(80),
-  description: z.string().max(500).optional(),
   color: z
     .string()
     .regex(/^#[0-9a-fA-F]{6}$/)
@@ -57,9 +56,7 @@ export async function POST(request: Request) {
       organizationId: auth.orgId,
       name: parsed.data.name,
       slug,
-      description: parsed.data.description,
       color: parsed.data.color,
-      createdBy: auth.userId,
     })
     .returning();
 

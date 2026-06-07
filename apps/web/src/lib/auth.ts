@@ -45,12 +45,17 @@ async function trySendEmail(fn: () => Promise<void>, context: string): Promise<v
   }
 }
 
+const appUrl = process.env["APP_URL"] ?? "http://localhost:3000";
+
+// Always trust APP_URL + localhost so the app works whether accessed by IP or locally.
+const trustedOrigins = Array.from(new Set([appUrl, "http://localhost:3000"]));
+
 export const auth = betterAuth({
-  baseURL: process.env["APP_URL"] ?? "http://localhost:3000",
+  baseURL: appUrl,
   // Falls back to a dev placeholder so the app starts without a secret configured.
   // Changing this in production invalidates all existing sessions.
   secret: process.env["AUTH_SECRET"] ?? "dev-secret-replace-in-production",
-  trustedOrigins: [process.env["APP_URL"] ?? "http://localhost:3000"],
+  trustedOrigins,
 
   database: drizzleAdapter(db, {
     provider: "pg",

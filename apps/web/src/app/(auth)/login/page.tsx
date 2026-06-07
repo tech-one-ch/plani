@@ -89,7 +89,11 @@ export default function LoginPage() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Password</Label>
-              <Link href="/reset-password" className="text-xs text-zinc-500 hover:underline">
+              <Link
+                href="/reset-password"
+                className="text-xs hover:underline"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
                 Forgot password?
               </Link>
             </div>
@@ -103,10 +107,21 @@ export default function LoginPage() {
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-zinc-200" />
+            <span
+              className="w-full border-t"
+              style={{ borderColor: "var(--color-border-default)" }}
+            />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-2 text-zinc-400">or</span>
+            <span
+              className="px-2"
+              style={{
+                backgroundColor: "var(--color-bg-elevated)",
+                color: "var(--color-text-muted)",
+              }}
+            >
+              or
+            </span>
           </div>
         </div>
 
@@ -129,9 +144,13 @@ export default function LoginPage() {
           </Button>
         </div>
 
-        <p className="text-center text-sm text-zinc-500">
+        <p className="text-center text-sm" style={{ color: "var(--color-text-secondary)" }}>
           No account?{" "}
-          <Link href="/signup" className="font-medium text-zinc-900 hover:underline">
+          <Link
+            href="/signup"
+            className="font-medium hover:underline"
+            style={{ color: "var(--color-text-primary)" }}
+          >
             Sign up
           </Link>
         </p>
