@@ -82,7 +82,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
       .from(members)
       .where(
         and(
-          eq(members.organizationId, project!.organizationId),
+          eq(members.organizationId, project.organizationId),
           eq(members.userId, parsed.data.assignee_id),
         ),
       )
