@@ -11,9 +11,9 @@ import { signUp } from "@/lib/auth-client";
 
 const schema = z
   .object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
+    name: z.string().min(2, "At least 2 characters"),
     email: z.string().email("Invalid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    password: z.string().min(8, "At least 8 characters"),
     confirm: z.string(),
   })
   .refine((d) => d.password === d.confirm, {
@@ -48,7 +48,6 @@ export function SetupForm() {
       return;
     }
 
-    // Mark instance setup as complete
     const res = await fetch("/api/setup", { method: "POST" });
     setLoading(false);
 
@@ -63,34 +62,76 @@ export function SetupForm() {
   }
 
   return (
-    <form onSubmit={(e) => void handleSubmit(onSubmit)(e)} className="space-y-4">
-      <div className="space-y-1.5">
+    <form onSubmit={(e) => void handleSubmit(onSubmit)(e)} className="space-y-5">
+      <div className="space-y-2">
         <Label htmlFor="name">Full name</Label>
-        <Input id="name" type="text" placeholder="Your name" {...register("name")} />
-        {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
+        <Input
+          id="name"
+          type="text"
+          placeholder="Your name"
+          autoComplete="name"
+          {...register("name")}
+        />
+        {errors.name && (
+          <p className="text-xs" style={{ color: "var(--color-priority-high)" }}>
+            {errors.name.message}
+          </p>
+        )}
       </div>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="email">Email</Label>
-        <Input id="email" type="email" placeholder="admin@example.com" {...register("email")} />
-        {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
+      <div className="space-y-2">
+        <Label htmlFor="email">Email address</Label>
+        <Input
+          id="email"
+          type="email"
+          placeholder="admin@example.com"
+          autoComplete="email"
+          {...register("email")}
+        />
+        {errors.email && (
+          <p className="text-xs" style={{ color: "var(--color-priority-high)" }}>
+            {errors.email.message}
+          </p>
+        )}
       </div>
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
-        <Input id="password" type="password" {...register("password")} />
-        {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
+        <Input
+          id="password"
+          type="password"
+          placeholder="Min. 8 characters"
+          autoComplete="new-password"
+          {...register("password")}
+        />
+        {errors.password && (
+          <p className="text-xs" style={{ color: "var(--color-priority-high)" }}>
+            {errors.password.message}
+          </p>
+        )}
       </div>
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <Label htmlFor="confirm">Confirm password</Label>
-        <Input id="confirm" type="password" {...register("confirm")} />
-        {errors.confirm && <p className="text-xs text-red-500">{errors.confirm.message}</p>}
+        <Input
+          id="confirm"
+          type="password"
+          placeholder="Repeat your password"
+          autoComplete="new-password"
+          {...register("confirm")}
+        />
+        {errors.confirm && (
+          <p className="text-xs" style={{ color: "var(--color-priority-high)" }}>
+            {errors.confirm.message}
+          </p>
+        )}
       </div>
 
-      <Button type="submit" className="w-full" disabled={loading}>
-        {loading ? "Creating account…" : "Create admin account"}
-      </Button>
+      <div className="pt-2">
+        <Button type="submit" className="w-full" disabled={loading}>
+          {loading ? "Creating account…" : "Get started →"}
+        </Button>
+      </div>
     </form>
   );
 }

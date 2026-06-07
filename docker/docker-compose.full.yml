@@ -1,0 +1,27 @@
+# Full local stack — infrastructure + app built from local source.
+# Useful for testing the Docker image locally before pushing.
+#
+# Usage:
+#   docker compose -f docker/docker-compose.dev.yml -f docker/docker-compose.full.yml up --build
+#   make dev-docker
+
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      APP_URL: http://localhost:3000
+      DATABASE_URL: postgres://plani:plani@postgres:5432/plani
+      AUTH_SECRET: dev-secret-change-in-production
+      SMTP_HOST: mailhog
+      SMTP_PORT: "1025"
+      SMTP_SECURE: "false"
+      SMTP_FROM: "Plani <no-reply@plani.local>"
+    depends_on:
+      postgres:
+        condition: service_healthy

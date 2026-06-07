@@ -83,9 +83,13 @@ export default function SignupPage() {
           </Button>
         </form>
 
-        <p className="text-center text-sm text-zinc-500">
+        <p className="text-center text-sm" style={{ color: "var(--color-text-secondary)" }}>
           Already have an account?{" "}
-          <Link href="/login" className="font-medium text-zinc-900 hover:underline">
+          <Link
+            href="/login"
+            className="font-medium hover:underline"
+            style={{ color: "var(--color-text-primary)" }}
+          >
             Sign in
           </Link>
         </p>

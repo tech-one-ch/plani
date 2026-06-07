@@ -4,6 +4,9 @@ on:
   pull_request:
     branches: [develop, staging, main]
 
+permissions:
+  contents: read
+
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -15,12 +18,12 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       # version is read from packageManager in package.json
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: pnpm
@@ -39,3 +42,13 @@ jobs:
         env:
           TURBO_TELEMETRY_DISABLED: 1
           NEXT_TELEMETRY_DISABLED: 1
+
+  ci:
+    name: CI
+    needs: [lint-typecheck-build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: All checks passed
+        run: |
+          [ "${{ needs.lint-typecheck-build.result }}" = "success" ] || exit 1
