@@ -40,7 +40,7 @@ importers:
     dependencies:
       '@hookform/resolvers':
         specifier: ^3.9.1
-        version: 3.10.0(react-hook-form@7.76.1(react@19.2.6))
+        version: 3.10.0(react-hook-form@7.77.0(react@19.2.6))
       '@plani/auth':
         specifier: workspace:*
         version: link:../../packages/auth
@@ -75,8 +75,8 @@ importers:
         specifier: ^19.0.0
         version: 19.2.6(react@19.2.6)
       react-hook-form:
-        specifier: ^7.54.2
-        version: 7.76.1(react@19.2.6)
+        specifier: ^7.77.0
+        version: 7.77.0(react@19.2.6)
       sonner:
         specifier: ^1.7.4
         version: 1.7.4(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -3498,8 +3498,8 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  react-hook-form@7.76.1:
-    resolution: {integrity: sha512-rYM7tPiWlu3nZchkR/ex7piyzui2vFPyaLnXnI/RnblB/L4qfMmyses8llJVtF1NpE9WBBsJlGtcSZzPCXW1qQ==}
+  react-hook-form@7.77.0:
+    resolution: {integrity: sha512-Sslh9YDYc0GDlWT/lxasnIduNo4v3yyvqRGvmGKUre5AFjDs/HV9/OafHGD8d+sB2yoL4UIL9L8X9i0WlZZebg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -3597,6 +3597,11 @@ packages:
 
   semver@7.8.1:
     resolution: {integrity: sha512-rkVq3IXh+4FDGch+KwzX3aV9W3kO54GyEgpvBzSyctDA6Xtd7RJQV1xmXbeQp5v7+VzLOfVqiutSE6GICgPFvg==}
+    engines: {node: '>=10'}
+    hasBin: true
+
+  semver@7.8.2:
+    resolution: {integrity: sha512-c8jsqUZm3omBOI66G90z1Dyw5z622G8oLG+omfsHBJf3CWQTlOcwOjvOG6wtiNfW6anKm/eA39LMwMtMez2TiQ==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -4668,9 +4673,9 @@ snapshots:
       '@eslint/core': 0.17.0
       levn: 0.4.1
 
-  '@hookform/resolvers@3.10.0(react-hook-form@7.76.1(react@19.2.6))':
+  '@hookform/resolvers@3.10.0(react-hook-form@7.77.0(react@19.2.6))':
     dependencies:
-      react-hook-form: 7.76.1(react@19.2.6)
+      react-hook-form: 7.77.0(react@19.2.6)
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -6167,7 +6172,7 @@ snapshots:
       '@petamoriken/float16': 3.9.3
       debug: 4.4.3
       env-paths: 3.0.0
-      semver: 7.8.1
+      semver: 7.8.2
       shell-quote: 1.8.4
       which: 4.0.0
     transitivePeerDependencies:
@@ -6911,7 +6916,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  react-hook-form@7.76.1(react@19.2.6):
+  react-hook-form@7.77.0(react@19.2.6):
     dependencies:
       react: 19.2.6
 
@@ -7038,6 +7043,9 @@ snapshots:
   semver@6.3.1: {}
 
   semver@7.8.1: {}
+
+  semver@7.8.2:
+    optional: true
 
   set-cookie-parser@3.1.0: {}
 
