@@ -47,7 +47,7 @@ async function getTaskWithAccess(taskId: string, userId: string) {
 
   if (!member)
     return { task: null, error: NextResponse.json({ error: "Forbidden" }, { status: 403 }) };
-  return { task, error: null };
+  return { task, project, error: null };
 }
 
 export async function GET(_req: NextRequest, { params }: Params) {
@@ -65,7 +65,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   const { error: sessionError, session } = await requireSession();
   if (sessionError || !session) return sessionError;
 
-  const { task, error } = await getTaskWithAccess(taskId, session.user.id);
+  const { task, project, error } = await getTaskWithAccess(taskId, session.user.id);
   if (error || !task) return error;
 
   const body = (await request.json()) as unknown;
@@ -75,6 +75,25 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   }
 
   const db = getDb();
+
+  if (parsed.data.assignee_id) {
+    const [m] = await db
+      .select({ id: members.id })
+      .from(members)
+      .where(
+        and(
+          eq(members.organizationId, project!.organizationId),
+          eq(members.userId, parsed.data.assignee_id),
+        ),
+      )
+      .limit(1);
+    if (!m)
+      return NextResponse.json(
+        { error: "Assignee is not a member of this organization" },
+        { status: 400 },
+      );
+  }
+
   const updates: Record<string, unknown> = {};
   if (parsed.data.title !== undefined) updates["title"] = parsed.data.title;
   if (parsed.data.description !== undefined) updates["description"] = parsed.data.description;
