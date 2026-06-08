@@ -49,7 +49,7 @@ importers:
         version: 3.2.2(react@19.2.7)
       '@hookform/resolvers':
         specifier: ^3.9.1
-        version: 3.10.0(react-hook-form@7.77.0(react@19.2.7))
+        version: 3.10.0(react-hook-form@7.78.0(react@19.2.7))
       '@plani/auth':
         specifier: workspace:*
         version: link:../../packages/auth
@@ -99,8 +99,8 @@ importers:
         specifier: ^19.2.7
         version: 19.2.7(react@19.2.7)
       react-hook-form:
-        specifier: ^7.77.0
-        version: 7.77.0(react@19.2.7)
+        specifier: ^7.78.0
+        version: 7.78.0(react@19.2.7)
       sonner:
         specifier: ^1.7.4
         version: 1.7.4(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -4391,8 +4391,8 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  react-hook-form@7.77.0:
-    resolution: {integrity: sha512-Sslh9YDYc0GDlWT/lxasnIduNo4v3yyvqRGvmGKUre5AFjDs/HV9/OafHGD8d+sB2yoL4UIL9L8X9i0WlZZebg==}
+  react-hook-form@7.78.0:
+    resolution: {integrity: sha512-EEZqc+N23moyzTlz61Pj+JvcXo76ICkpfOZo8JZw+sM4+wLQGh6nI2Ms+PdMOYNluFu0ghlM7B8mCzhRYtJCnA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -4527,6 +4527,11 @@ packages:
 
   semver@7.8.1:
     resolution: {integrity: sha512-rkVq3IXh+4FDGch+KwzX3aV9W3kO54GyEgpvBzSyctDA6Xtd7RJQV1xmXbeQp5v7+VzLOfVqiutSE6GICgPFvg==}
+    engines: {node: '>=10'}
+    hasBin: true
+
+  semver@7.8.3:
+    resolution: {integrity: sha512-wnilbGyMxzbY7dNOl7jpKbLSjcfeweJWU5j4+u5qW+6/wuGD9KzIGOyZnQVSBM9E7DtWaaH3CyHkppYrKYoxwg==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -4733,8 +4738,16 @@ packages:
     resolution: {integrity: sha512-M/Q0B2cp4K7kynaT/vnED1j8TlLY+Pp7C6Wl2bl/7u/F0mUVwdyOpwomQb8JpYLitHUssAJRmLZdMCGsrx7i+g==}
     engines: {node: '>=18'}
 
+  tinyexec@1.2.4:
+    resolution: {integrity: sha512-SHf/r48b7vOrjve9PxJo3MN5v5yuyjHvdUcrQffT3WXMUfnGmHDVbC4k3sHJaJTgZCwpUplIaAo5ANtMyp3YHg==}
+    engines: {node: '>=18'}
+
   tinyglobby@0.2.16:
     resolution: {integrity: sha512-pn99VhoACYR8nFHhxqix+uvsbXineAasWm5ojXoN8xEwK5Kd3/TrhNn1wByuD52UxWRLy8pu+kRMniEi6Eq9Zg==}
+    engines: {node: '>=12.0.0'}
+
+  tinyglobby@0.2.17:
+    resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
 
   tinypool@1.1.1:
@@ -5829,9 +5842,9 @@ snapshots:
 
   '@floating-ui/utils@0.2.11': {}
 
-  '@hookform/resolvers@3.10.0(react-hook-form@7.77.0(react@19.2.7))':
+  '@hookform/resolvers@3.10.0(react-hook-form@7.78.0(react@19.2.7))':
     dependencies:
-      react-hook-form: 7.77.0(react@19.2.7)
+      react-hook-form: 7.78.0(react@19.2.7)
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -7950,7 +7963,7 @@ snapshots:
       '@petamoriken/float16': 3.9.3
       debug: 4.4.3
       env-paths: 3.0.0
-      semver: 7.8.1
+      semver: 7.8.3
       shell-quote: 1.8.4
       which: 4.0.0
     transitivePeerDependencies:
@@ -8868,7 +8881,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  react-hook-form@7.77.0(react@19.2.7):
+  react-hook-form@7.78.0(react@19.2.7):
     dependencies:
       react: 19.2.7
 
@@ -9028,6 +9041,9 @@ snapshots:
   semver@6.3.1: {}
 
   semver@7.8.1: {}
+
+  semver@7.8.3:
+    optional: true
 
   set-cookie-parser@3.1.0: {}
 
@@ -9291,10 +9307,19 @@ snapshots:
 
   tinyexec@1.2.2: {}
 
+  tinyexec@1.2.4:
+    optional: true
+
   tinyglobby@0.2.16:
     dependencies:
       fdir: 6.5.0(picomatch@4.0.4)
       picomatch: 4.0.4
+
+  tinyglobby@0.2.17:
+    dependencies:
+      fdir: 6.5.0(picomatch@4.0.4)
+      picomatch: 4.0.4
+    optional: true
 
   tinypool@1.1.1: {}
 
@@ -9530,8 +9555,8 @@ snapshots:
       picomatch: 4.0.4
       std-env: 4.1.0
       tinybench: 2.9.0
-      tinyexec: 1.2.2
-      tinyglobby: 0.2.16
+      tinyexec: 1.2.4
+      tinyglobby: 0.2.17
       tinyrainbow: 3.1.0
       vite: 5.4.21(@types/node@22.19.19)(lightningcss@1.32.0)
       why-is-node-running: 2.3.0
